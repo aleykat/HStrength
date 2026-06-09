@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Strength Program</title>
+<meta name="theme-color" content="#15120e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Strength">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #15120e;
+    --bg-2: #1c1813;
+    --surface: #231e18;
+    --surface-2: #2a241d;
+    --ink: #f3ece0;
+    --ink-dim: #b6a892;
+    --ink-faint: #75695a;
+    --accent: #9ccb86;       /* calm sage — "go / healthy" */
+    --accent-deep: #6f9e5b;
+    --warm: #e3ab63;         /* amber — secondary highlight */
+    --stop: #d9614a;         /* muted red — genuine stop signals only */
+    --rule: #322b22;
+    --green: #8cc471;
+    --yellow: #e3b552;
+    --red: #d9614a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(at 15% 0%, rgba(156,203,134,0.05) 0%, transparent 55%),
+      radial-gradient(at 85% 100%, rgba(227,171,99,0.04) 0%, transparent 55%);
+    background-attachment: fixed;
+  }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 16px;
+    background: rgba(21,18,14,0.86);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+    overflow-x: auto;
+    height: 52px;
+  }
+  .nav .brand {
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.04em;
+    color: var(--ink); margin-right: 18px; white-space: nowrap;
+  }
+  .nav a {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-dim); text-decoration: none;
+    padding: 8px 12px; border-radius: 6px; white-space: nowrap; transition: all .15s;
+  }
+  .nav a:hover { color: var(--accent); background: var(--surface); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; padding: 72px 6vw 80px; border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; right: -220px; top: 50%; transform: translateY(-50%);
+    width: 820px; height: 820px; border: 1px solid var(--rule); border-radius: 50%;
+    opacity: 0.35; pointer-events: none;
+  }
+  .meta-bar {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--ink-dim); margin-bottom: 44px;
+  }
+  .meta-bar .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 12px var(--accent); }
+  .meta-bar .divider { width: 48px; height: 1px; background: var(--rule); }
+  h1.title {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 11vw, 150px);
+    line-height: 0.86; letter-spacing: 0.005em; margin-bottom: 26px; position: relative; z-index: 2;
+  }
+  h1.title .accent { color: var(--accent); font-style: italic; display: inline-block; }
+  .subtitle {
+    font-style: italic; font-size: clamp(17px, 2.1vw, 23px); max-width: 660px;
+    color: var(--ink-dim); line-height: 1.5; margin-bottom: 44px; position: relative; z-index: 2;
+  }
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 780px;
+    border-top: 1px solid var(--rule); padding-top: 24px; position: relative; z-index: 2;
+  }
+  .stat .num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(34px, 5vw, 54px); line-height: 1; color: var(--accent); }
+  .stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 76px 6vw; position: relative; z-index: 2; }
+  section + section { border-top: 1px solid var(--rule); }
+  .section-tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    padding: 4px 10px; border: 1px solid var(--accent-deep); border-radius: 4px; margin-bottom: 22px;
+  }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(38px, 6vw, 66px); line-height: 0.98; letter-spacing: 0.01em; margin-bottom: 22px; max-width: 1000px; }
+  h2 .em { color: var(--accent); font-style: italic; }
+  h3 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 0.02em; margin: 36px 0 14px; }
+  p { max-width: 720px; margin-bottom: 16px; }
+  p.lead { font-size: 19px; color: var(--ink-dim); margin-bottom: 28px; max-width: 760px; }
+  strong { color: var(--ink); font-weight: 600; }
+  em { color: var(--ink-dim); }
+  a { color: var(--accent); }
+
+  /* ===== CARD GRIDS ===== */
+  .grid { display: grid; gap: 18px; margin-top: 28px; }
+  .grid.two { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+  .grid.three { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid.four { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 24px; position: relative;
+  }
+  .card::before { content: ''; position: absolute; top: 0; left: 24px; width: 40px; height: 2px; background: var(--accent); }
+  .card h4 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 0.02em; margin-bottom: 12px; line-height: 1.1; }
+
+  /* time budget table inside session cards */
+  .budget { width: 100%; border-collapse: collapse; margin: 10px 0 6px; font-size: 14px; }
+  .budget td { padding: 7px 8px; border-bottom: 1px solid var(--rule); color: var(--ink-dim); }
+  .budget td:nth-child(2) { font-family: 'JetBrains Mono', monospace; color: var(--accent); text-align: right; white-space: nowrap; }
+  .budget tr:last-child td { border-bottom: none; color: var(--ink); font-weight: 600; }
+  .budget tr:last-child td:nth-child(2) { color: var(--accent); }
+
+  /* ===== DETAILS (expandable) ===== */
+  details { border-top: 1px dashed var(--rule); margin-top: 14px; }
+  details > summary {
+    cursor: pointer; list-style: none; padding: 12px 0 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: '+'; font-size: 14px; width: 14px; }
+  details[open] > summary::before { content: '–'; }
+  .detail-body { padding: 8px 0 14px; }
+
+  .spec {
+    display: grid; grid-template-columns: 84px 1fr; gap: 4px 14px; font-size: 14.5px;
+    margin: 4px 0;
+  }
+  .spec .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); padding-top: 4px; }
+  .spec .v { color: var(--ink-dim); }
+  .spec .v strong { color: var(--ink); }
+
+  /* ankle demand dots */
+  .dot-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; color: var(--ink-faint); margin-left: auto; }
+  .demand-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .d-low { background: var(--green); box-shadow: 0 0 8px rgba(140,196,113,.5); }
+  .d-mod { background: var(--yellow); box-shadow: 0 0 8px rgba(227,181,82,.5); }
+  .d-high { background: var(--red); }
+  .card .head-row { display: flex; align-items: center; gap: 10px; }
+  .pattern-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--warm); margin-bottom: 6px; }
+  .start-here { margin-top: 12px; font-size: 13.5px; color: var(--ink-dim); background: rgba(156,203,134,0.08); border: 1px solid var(--accent-deep); border-radius: 8px; padding: 9px 12px; }
+  .start-here .sh-k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-right: 8px; }
+  .start-here strong { color: var(--ink); }
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    background: var(--bg-2); border-left: 3px solid var(--accent); border-radius: 8px;
+    padding: 22px 24px; margin: 28px 0; max-width: 860px;
+  }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.stop { border-left-color: var(--stop); }
+  .callout .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .callout.warm .lbl { color: var(--warm); }
+  .callout.stop .lbl { color: var(--stop); }
+  .callout p { margin: 0; color: var(--ink-dim); }
+  .callout p strong { color: var(--ink); }
+
+  /* the big rule */
+  .rule-box {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--accent-deep); border-radius: 14px; padding: 36px 34px; margin: 28px 0; max-width: 880px;
+  }
+  .rule-box .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .rule-box .rule { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(20px, 2.6vw, 28px); line-height: 1.4; color: var(--ink); }
+  .rule-box .rule .hl { color: var(--accent); font-style: italic; }
+
+  /* ===== SWELLING TRAFFIC LIGHTS ===== */
+  .lights { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 16px; margin-top: 28px; }
+  .light { border-radius: 10px; padding: 24px; border: 1px solid var(--rule); background: var(--surface); }
+  .light .badge { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.03em; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .light .badge .b-dot { width: 14px; height: 14px; border-radius: 50%; }
+  .light.g { border-top: 3px solid var(--green); } .light.g .b-dot { background: var(--green); }
+  .light.y { border-top: 3px solid var(--yellow); } .light.y .b-dot { background: var(--yellow); }
+  .light.r { border-top: 3px solid var(--red); } .light.r .b-dot { background: var(--red); }
+  .light .row { font-size: 14px; margin-bottom: 10px; color: var(--ink-dim); }
+  .light .row .k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 2px; }
+
+  /* ===== STAGE LADDER ===== */
+  .ladder { margin-top: 28px; display: grid; gap: 16px; }
+  .stage { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 24px; }
+  .stage .head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+  .stage .n { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--accent); line-height: 1; }
+  .stage .nm { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.02em; }
+  .stage .wk { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm); }
+  .stage ul { list-style: none; margin: 12px 0; }
+  .stage ul li { font-size: 14.5px; color: var(--ink-dim); padding: 6px 0 6px 20px; position: relative; }
+  .stage ul li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+  .gate { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--rule); }
+  .gate .gt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .gate label { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-dim); padding: 5px 0; cursor: pointer; }
+  .gate input { margin-top: 4px; accent-color: var(--accent); }
+
+  /* ===== SCHEDULE TABLES ===== */
+  .table-wrap { margin-top: 22px; overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; }
+  table.sched { width: 100%; border-collapse: collapse; min-width: 620px; }
+  table.sched th { background: var(--bg-2); text-align: left; padding: 13px 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--rule); }
+  table.sched td { padding: 13px 16px; border-bottom: 1px solid var(--rule); font-size: 14px; color: var(--ink-dim); }
+  table.sched tr:last-child td { border-bottom: none; }
+  table.sched td.wk { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--accent); line-height: 1; }
+  table.sched tr.deload td { background: rgba(227,171,99,0.07); }
+  table.sched tr.deload td.wk { color: var(--warm); }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 20px; background: rgba(227,171,99,0.15); color: var(--warm); white-space: nowrap; }
+
+  .params { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .param { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 16px; }
+  .param .v { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--accent); line-height: 1; }
+  .param .l { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-top: 4px; }
+
+  /* ===== TRACKER ===== */
+  .tracker { margin-top: 30px; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--surface); max-width: 1000px; }
+  .tk-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 18px 22px; border-bottom: 1px solid var(--rule); background: var(--bg-2); }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+  .seg button { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; background: transparent; color: var(--ink-dim); border: none; padding: 9px 16px; cursor: pointer; transition: all .15s; }
+  .seg button.on { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .tk-field { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+  .tk-field input[type=date] { background: var(--surface); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .tk-spacer { flex: 1; }
+
+  .tk-head, .tk-row { display: grid; grid-template-columns: 1.7fr 0.9fr 0.9fr 0.9fr; gap: 10px; align-items: center; padding: 12px 22px; }
+  .tk-head { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--rule); }
+  .tk-head div:not(:first-child) { text-align: center; }
+  .tk-row { border-bottom: 1px solid var(--rule); }
+  .tk-row .ex-name { font-weight: 600; color: var(--ink); font-size: 15px; }
+  .tk-row .last { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; color: var(--accent-deep); margin-top: 4px; }
+  .tk-row .last.start { color: var(--warm); }
+  .tk-row input { width: 100%; background: var(--bg); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px; padding: 9px 6px; font-family: 'JetBrains Mono', monospace; font-size: 15px; text-align: center; }
+  .tk-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(156,203,134,0.18); }
+  .tk-row input.wt { color: var(--accent); }
+
+  .tk-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 18px; padding: 20px 22px; border-bottom: 1px solid var(--rule); }
+  .tk-meta .blk .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg); border: 1px solid var(--rule); color: var(--ink-dim); border-radius: 20px; padding: 7px 14px; cursor: pointer; transition: all .15s; }
+  .chip.on { border-color: var(--accent); color: var(--ink); }
+  .chip[data-v="OK"].on { background: rgba(140,196,113,.18); border-color: var(--green); }
+  .chip[data-v="Ached"].on { background: rgba(227,181,82,.18); border-color: var(--yellow); }
+  .chip[data-v="Swelled"].on { background: rgba(217,97,74,.18); border-color: var(--red); }
+  .chip.stage.on { background: rgba(156,203,134,.18); border-color: var(--accent); }
+  .tk-meta textarea { width: 100%; background: var(--bg); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; font-family: 'Fraunces', serif; font-size: 15px; resize: vertical; min-height: 46px; }
+  .tk-meta textarea:focus { outline: none; border-color: var(--accent); }
+
+  .tk-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 18px 22px; background: var(--bg-2); }
+  .btn { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; border: none; border-radius: 8px; padding: 12px 24px; cursor: pointer; }
+  .btn.primary { background: var(--accent); color: var(--bg); }
+  .btn.ghost { background: transparent; color: var(--ink-dim); border: 1px solid var(--rule); }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .toast { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); opacity: 0; transition: opacity .2s; }
+  .toast.show { opacity: 1; }
+
+  .history { margin-top: 28px; max-width: 1000px; }
+  .history .h-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+  .hist-item { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .hist-head { display: flex; align-items: center; gap: 14px; padding: 14px 18px; cursor: pointer; }
+  .hist-head .date { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); font-weight: 700; }
+  .hist-head .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: var(--bg); border: 1px solid var(--rule); color: var(--ink-dim); }
+  .hist-head .tag.A { color: var(--accent); border-color: var(--accent-deep); }
+  .hist-head .tag.B { color: var(--warm); border-color: var(--warm); }
+  .hist-head .ank { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .hist-head .ank.OK { color: var(--green); } .hist-head .ank.Ached { color: var(--yellow); } .hist-head .ank.Swelled { color: var(--red); }
+  .hist-head .grow { flex: 1; color: var(--ink-faint); font-size: 13px; }
+  .hist-head button { background: transparent; border: 1px solid var(--rule); color: var(--ink-faint); border-radius: 6px; padding: 5px 11px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer; }
+  .hist-head button:hover { color: var(--stop); border-color: var(--stop); }
+  .hist-body { display: none; padding: 0 18px 16px; font-size: 14px; color: var(--ink-dim); }
+  .hist-item.open .hist-body { display: block; }
+  .hist-body .ex { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+  .hist-body .ex:last-of-type { border-bottom: none; }
+  .hist-body .ex .v { font-family: 'JetBrains Mono', monospace; color: var(--ink); }
+  .hist-body .felt { margin-top: 10px; font-style: italic; color: var(--ink-dim); }
+  .empty { color: var(--ink-faint); font-style: italic; }
+
+  /* ===== FOOTER ===== */
+  footer { padding: 60px 6vw 50px; border-top: 1px solid var(--rule); background: var(--bg-2); }
+  footer .signoff { font-style: italic; font-weight: 600; font-size: 22px; color: var(--ink); max-width: 640px; margin-bottom: 20px; line-height: 1.45; }
+  footer .disclaimer { max-width: 720px; font-size: 13px; color: var(--ink-faint); margin-bottom: 18px; }
+  footer .fine { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+
+  @media (max-width: 720px) {
+    .hero { padding: 56px 6vw 64px; }
+    section { padding: 56px 6vw; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .tk-head, .tk-row { grid-template-columns: 1.4fr 0.9fr 0.9fr 0.9fr; gap: 6px; padding: 12px 14px; }
+    .tk-row input { padding: 9px 3px; font-size: 14px; }
+    .tk-toolbar, .tk-actions, .tk-meta { padding: 16px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <span class="brand">Home Strength</span>
+  <a href="#begin">Before You Begin</a>
+  <a href="#start">Start Here</a>
+  <a href="#sessions">Sessions</a>
+  <a href="#exercises">Exercises</a>
+  <a href="#warmup">Warm-Up</a>
+  <a href="#ankle">Ankle Ladder</a>
+  <a href="#swelling">Swelling</a>
+  <a href="#program">The Plan</a>
+  <a href="#cardio">Cardio</a>
+  <a href="#tracker">Tracker</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="meta-bar">
+    <span class="dot"></span>
+    <span>Home Strength</span>
+    <span class="divider"></span>
+    <span>2 days / week</span>
+    <span class="divider"></span>
+    <span>~30 min</span>
+    <span class="divider"></span>
+    <span>Joint-respecting</span>
+  </div>
+  <h1 class="title">Stronger,<br>with <span class="accent">less pain</span></h1>
+  <p class="subtitle">A gentle, low-impact strength program built for your body, your ankle, and your time — designed to be something you can actually keep doing. Adherence beats "optimal." Always.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="num">2</div><div class="label">Sessions / week</div></div>
+    <div class="stat"><div class="num">~30</div><div class="label">Minutes each</div></div>
+    <div class="stat"><div class="num">18+</div><div class="label">Weeks mapped</div></div>
+    <div class="stat"><div class="num">9</div><div class="label">Core exercises</div></div>
+  </div>
+</header>
+
+<!-- ===== BEFORE YOU BEGIN ===== -->
+<section id="begin">
+  <span class="section-tag">// Before You Begin</span>
+  <h2>A safe start <span class="em">comes first</span></h2>
+  <p class="lead">Two minutes before you pick up a weight. This isn't red tape — it's how you make sure this plan is right for you today, and what to watch for so you can train with confidence. <strong>This is a fitness plan, not medical advice.</strong></p>
+
+  <h3>Quick self-screen</h3>
+  <p style="font-size:15px;color:var(--ink-dim)">Tick any that are true for you. There's no wrong answer — this just tells you whether a quick chat with your doctor should come first.</p>
+  <div class="card" style="max-width:860px">
+    <div class="gate" style="border-top:none;padding-top:0">
+      <div class="gt">In the last while…</div>
+      <label><input type="checkbox" class="screen-q"> A doctor has said I have a heart condition and should only exercise as recommended by a doctor</label>
+      <label><input type="checkbox" class="screen-q"> I feel pain or pressure in my chest — during activity, or at rest in the past month</label>
+      <label><input type="checkbox" class="screen-q"> I lose my balance from dizziness, or I have lost consciousness</label>
+      <label><input type="checkbox" class="screen-q"> I'm taking prescribed medication for blood pressure or a heart condition</label>
+      <label><input type="checkbox" class="screen-q"> I have a bone or joint issue (back, hip, knee — or my ankle) that exercise could worsen</label>
+      <label><input type="checkbox" class="screen-q"> I'm pregnant, recently gave birth, had recent surgery, or have a pelvic-floor concern</label>
+      <label><input type="checkbox" class="screen-q"> There's another reason I'm unsure whether I should start exercising</label>
+    </div>
+    <div id="screen-result" style="display:none; margin-top:16px; padding:14px 16px; border-radius:8px; background:rgba(227,171,99,0.1); border:1px solid var(--warm); font-size:14.5px; color:var(--ink-dim)">
+      <strong style="color:var(--ink)">Worth a quick check first.</strong> You ticked at least one box — please talk with your physician before starting, and bring this plan with you. It doesn't mean you can't do this; it means a 10-minute conversation makes your start safer. The ankle box in particular is why ankle/ortho PT input is recommended.
+    </div>
+    <div id="screen-clear" style="margin-top:16px; padding:14px 16px; border-radius:8px; background:rgba(156,203,134,0.1); border:1px solid var(--accent-deep); font-size:14.5px; color:var(--ink-dim)">
+      <strong style="color:var(--ink)">Nothing ticked?</strong> You're clear to begin gently. Still, stop and get advice if any of the red-flag signs below show up once you're moving.
+    </div>
+  </div>
+
+  <h3>Stop immediately if you feel…</h3>
+  <div class="callout stop">
+    <div class="lbl">Stop the session and seek medical advice</div>
+    <p>
+      • <strong>Chest pain or pressure</strong><br>
+      • <strong>Dizziness, faintness, or lightheadedness</strong><br>
+      • <strong>An irregular, racing, or fluttering heartbeat</strong><br>
+      • <strong>Sharp or sudden joint pain</strong> — different from normal muscle effort<br>
+      • Unusual shortness of breath, or sudden heat / sharp pain / swelling in your ankle
+    </p>
+    <p style="margin-top:10px"><strong>Call emergency services</strong> for chest pain or pressure, severe shortness of breath, or fainting. For the rest: stop, rest, and check in with a professional before training again.</p>
+  </div>
+
+  <h3>When to bring in a professional</h3>
+  <p class="lead">Three people are worth knowing about. You don't need all of them — these are the specific signals that make a visit worthwhile.</p>
+  <div class="grid three">
+    <div class="card"><h4>Physician / GP</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Before starting if you ticked any self-screen box. Any red-flag symptom above. New or worsening pain that doesn't settle within a few days, or any heart/breathing concern.</p></div>
+    <div class="card"><h4>Pelvic-floor PT</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Any leaking, pressure, heaviness, or bulging during or after effort — especially if it happens more than once. Reinforce the exhale-on-effort habit meanwhile. <strong>Common and very treatable.</strong></p></div>
+    <div class="card"><h4>Ankle / ortho PT</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Ankle swelling that keeps recurring (repeated Yellow/Red), pain that isn't improving, or instability and low confidence that isn't progressing through the ankle ladder.</p></div>
+  </div>
+  <div class="callout"><div class="lbl">The honest disclaimer</div><p>This program is general fitness guidance, <strong>not medical advice</strong>, and doesn't replace care from your physician or a physiotherapist. You know your body and your history best — when something here conflicts with professional advice you've been given, follow the professional advice.</p></div>
+</section>
+
+<!-- ===== START HERE ===== -->
+<section id="start">
+  <span class="section-tag">// Start Here</span>
+  <h2>How to use <span class="em">this plan</span></h2>
+  <p class="lead">Read this once, then you mostly live in two places: the <a href="#sessions">Sessions</a> (what to do today) and the <a href="#tracker">Tracker</a> (where you log it). Everything else is here when you need it.</p>
+
+  <div class="grid three">
+    <div class="card"><h4>Two sessions</h4><p style="color:var(--ink-dim);font-size:15px;margin:0">Session A and Session B. Alternate them — A one session, B the next. Either one stands alone if a week gets cut short.</p></div>
+    <div class="card"><h4>Warm up, every time</h4><p style="color:var(--ink-dim);font-size:15px;margin:0">The warm-up and the ankle drill are never-cut items. If time is short, drop a set from the main work — never the warm-up.</p></div>
+    <div class="card"><h4>Breathe out on effort</h4><p style="color:var(--ink-dim);font-size:15px;margin:0">Exhale on the hard part of every rep. Never hold your breath under load. This protects your pelvic floor.</p></div>
+  </div>
+
+  <div class="callout warm">
+    <div class="lbl">The first four weeks</div>
+    <p>Some soreness is normal — the dull, all-over kind that eases within a day or two. Leaving two or three reps "in the tank" is <strong>correct, not lazy</strong>. The first session should feel almost too easy. On a rough day there's a named <a href="#min">10-Minute Session</a> that still counts. The goal of Week 1 is to finish feeling <strong>good</strong> — not wrecked.</p>
+  </div>
+
+  <h3>What a good session looks like</h3>
+  <p class="lead">A good session is not a heavy one, an exhausting one, or one that leaves you sore for days. It's much simpler than that:</p>
+  <div class="grid two">
+    <div class="card"><h4>You showed up</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">You warmed up, did your ankle drill, and moved — even if it was the 10-minute version on a tired day. Showing up <em>is</em> the win that builds the habit.</p></div>
+    <div class="card"><h4>You moved well</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">Controlled reps, exhaling on effort, stopping a couple of reps short of a struggle. Quality over grind, every time.</p></div>
+    <div class="card"><h4>You finished worked, not wrecked</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">A little warm and a little tired — not destroyed. If you're wiped out or sore for days, the next one was too much. Ease off; that's information, not failure.</p></div>
+    <div class="card"><h4>You logged it</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">Thirty seconds in the <a href="#tracker">tracker</a>. That record is what turns scattered workouts into visible, undeniable progress.</p></div>
+  </div>
+
+  <h3>Milestones worth celebrating</h3>
+  <p class="lead">The scale is the slowest, noisiest signal there is — and not the point here. These markers tell you the plan is working, often long before the scale does:</p>
+  <div class="grid three">
+    <div class="card"><h4>First weight added</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">The first time the double-progression rule earns you the next PowerBlock increment. Proof you got stronger.</p></div>
+    <div class="card"><h4>First pain-free session</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">A whole session — ankle included — with no nagging discomfort. A milestone you'll feel, not measure.</p></div>
+    <div class="card"><h4>Four straight weeks</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Both sessions, four weeks running. This is the one that predicts everything that follows.</p></div>
+    <div class="card"><h4>Daily life feels easier</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Stairs, carrying groceries, getting off the floor — the moment one of these is noticeably easier than it used to be.</p></div>
+    <div class="card"><h4>Standing on one leg</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">First unassisted single-leg balance (Ankle Ladder Stage 3) — real confidence rebuilt in that joint.</p></div>
+    <div class="card"><h4>First steady 20-minute ride</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">If you took up the optional <a href="#cardio">cardio</a> — a comfortable 20 minutes in the saddle.</p></div>
+  </div>
+</section>
+
+<!-- ===== SESSIONS ===== -->
+<section id="sessions">
+  <span class="section-tag">// The Sessions</span>
+  <h2>What you do <span class="em">each day</span></h2>
+  <p class="lead">Each session is about 30 minutes: warm-up, a short activation, 15 minutes of main work, your ankle drill, and a brief cooldown. Tap a session to see the full breakdown.</p>
+
+  <div class="callout">
+    <div class="lbl">Choosing your starting weight — start very light, on purpose</div>
+    <p>Each exercise below carries a <strong>suggested starting weight</strong>, and they're deliberately low. The first session should feel <strong>almost too easy</strong> — finish each set thinking "I could have done several more." That is exactly right: the goal for the first few weeks is building the habit, not chasing load. The double-progression rule will add weight when you've earned it. <strong>If in doubt, go lighter</strong> — it's far easier (and safer for your ankle and pelvic floor) to add a little next time than to start too heavy and get sore enough to skip the next session. These numbers are a starting point; after a session or two, let how it feels (RPE 5–6) be your guide.</p>
+  </div>
+
+  <div class="grid two">
+
+    <!-- SESSION A -->
+    <div class="card">
+      <div class="pattern-label">Session A</div>
+      <h4>Squat · Push · Row</h4>
+      <table class="budget">
+        <tr><td>Warm-Up &amp; Mobility</td><td>7 min</td></tr>
+        <tr><td>Activation</td><td>3 min</td></tr>
+        <tr><td>Main Work</td><td>15 min</td></tr>
+        <tr><td>Ankle Drill</td><td>3 min</td></tr>
+        <tr><td>Cooldown</td><td>2 min</td></tr>
+        <tr><td>Total</td><td>~30 min</td></tr>
+      </table>
+
+      <details>
+        <summary>Activation (3 min)</summary>
+        <div class="detail-body">
+          <div class="spec"><span class="k">Breaths</span><span class="v">3 diaphragmatic breaths — expand the lower ribcage, exhale <strong>completely</strong>, notice the pelvic floor lift. No breath-holding.</span></div>
+          <div class="spec"><span class="k">Bridge</span><span class="v">Glute bridge — 2 × 10. Drive hips to a straight knee-to-shoulder line; exhale up.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch — 3 × 5-sec holds each side. Front heel flat, drive knee gently toward the wall.</span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Main Work — Superset A</summary>
+        <div class="detail-body">
+          <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">A1, rest 15s, A2, rest 90s = one round.</p>
+          <div class="spec"><span class="k">A1</span><span class="v"><strong>Heel-Elevated Goblet Squat</strong> — 2×12–15 (Block 1) / 3×10–12 (Block 2+). Exhale up. <em>Start ~10 lb (or bodyweight box squat).</em></span></div>
+          <div class="spec"><span class="k">A2</span><span class="v"><strong>Incline Dumbbell Press</strong> (30–45°) — 2×12–15 / 3×10–12. Exhale as you press. <em>Start ~5 lb each hand.</em></span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Main Work — Superset B</summary>
+        <div class="detail-body">
+          <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">B1, rest 15s, B2, rest 60s = one round.</p>
+          <div class="spec"><span class="k">B1</span><span class="v"><strong>Seated Single-Arm Row</strong> — 2×12–15/side / 3×10–12/side. Exhale as you pull. <em>Start ~10 lb.</em></span></div>
+          <div class="spec"><span class="k">B2</span><span class="v"><strong>Dead Bug</strong> — 2×8/side / 3×8–10/side. Keep your low back flat to the floor. <em>Bodyweight.</em></span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Block 2+ · Ankle Drill · Cooldown</summary>
+        <div class="detail-body">
+          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: Hip Thrust 3×10–12 + Band/Towel Pull-Apart 3×12–15.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Your current <a href="#ankle">Ankle Ladder</a> stage (3 min). Unsure? Start at Stage 1.</span></div>
+          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor stretch · supine hamstring stretch · chest-opening bench stretch. 20–30s each.</span></div>
+        </div>
+      </details>
+    </div>
+
+    <!-- SESSION B -->
+    <div class="card">
+      <div class="pattern-label">Session B</div>
+      <h4>Hinge · Press · Row</h4>
+      <table class="budget">
+        <tr><td>Warm-Up &amp; Mobility</td><td>7 min</td></tr>
+        <tr><td>Activation</td><td>3 min</td></tr>
+        <tr><td>Main Work</td><td>15 min</td></tr>
+        <tr><td>Ankle Drill</td><td>3 min</td></tr>
+        <tr><td>Cooldown</td><td>2 min</td></tr>
+        <tr><td>Total</td><td>~30 min</td></tr>
+      </table>
+
+      <details>
+        <summary>Activation (3 min)</summary>
+        <div class="detail-body">
+          <div class="spec"><span class="k">Breaths</span><span class="v">Same as Session A — 3 slow diaphragmatic breaths, full exhale, pelvic floor lift.</span></div>
+          <div class="spec"><span class="k">Bridge</span><span class="v">Glute bridge — 2 × 10. Exhale up, lower with control.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch — 3 × 5-sec holds each side.</span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Main Work — Superset A</summary>
+        <div class="detail-body">
+          <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">A1, rest 15s, A2, rest 90s = one round.</p>
+          <div class="spec"><span class="k">A1</span><span class="v"><strong>Dumbbell Romanian Deadlift</strong> — 2×12–15 / 3×10–12. Block 1: lower only to mid-shin, natural tempo. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">A2</span><span class="v"><strong>Seated Dumbbell Press</strong> (neutral grip) — 2×12–15 / 3×10–12. Press to eye level, not locked overhead. <em>Start ~5 lb each hand.</em></span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Main Work — Superset B</summary>
+        <div class="detail-body">
+          <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">B1, rest 15s, B2, rest 60s = one round.</p>
+          <div class="spec"><span class="k">B1</span><span class="v"><strong>Bent-Over Dumbbell Row</strong> — 2×12–15 / 3×10–12. Flat back; chest on an incline bench if your low back tires. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">B2</span><span class="v"><strong>Bird-Dog</strong> — 2×8/side / 3×8–10/side. Hips square, no rotation. <em>Bodyweight.</em></span></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Block 2+ · Ankle Drill · Cooldown</summary>
+        <div class="detail-body">
+          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: Glute Bridge 3×10–12 + Dead Bug 3×8/side.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Your current <a href="#ankle">Ankle Ladder</a> stage (3 min).</span></div>
+          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor · supine hamstring · chest-opening bench stretch. 20–30s each.</span></div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- 10 MINUTE -->
+  <div id="min" class="callout">
+    <div class="lbl">The 10-Minute Session — a real session, not a consolation prize</div>
+    <p>For rough days, flare days, and days when something is better than nothing. <strong>5 min</strong> abbreviated warm-up (marching + arm circles, then seated ankle alphabet &amp; heel/toe raises — don't skip the ankle part) → <strong>pick 2 exercises from today's session, 1 set each</strong> at a 4–5/10 effort → done. On a Session A day: Goblet Squat 1×10–15 + Dead Bug 1×6–8/side. On a Session B day: RDL 1×10–15 + Bird-Dog 1×6–8/side. Mark "Min dose" on your tracker. <strong>You showed up. You have not broken anything.</strong></p>
+  </div>
+</section>
+
+<!-- ===== EXERCISES ===== -->
+<section id="exercises">
+  <span class="section-tag">// Exercise Library</span>
+  <h2>The <span class="em">movements</span></h2>
+  <p class="lead">Each card tells you how to do it, how to breathe, what it asks of your ankle, and how to make it easier or harder. The colored dot shows ankle (dorsiflexion) demand: <span style="color:var(--green)">●</span> low &nbsp; <span style="color:var(--yellow)">●</span> moderate &nbsp; <span style="color:var(--red)">●</span> high. Seated and floor exercises carry no ankle load.</p>
+
+  <div class="grid two" id="ex-grid"><!-- exercise cards injected by JS --></div>
+
+  <div class="callout warm">
+    <div class="lbl">A note on overhead pressing</div>
+    <p>Overhead pressing isn't in the program yet — your shoulders need time to open up before loading them vertically. When you can do a <strong>pain-free wall slide</strong> AND you've completed <strong>6 weeks of incline pressing</strong> with no shoulder complaint, you're ready. There's no rush: the incline press gives you most of the benefit with none of the risk right now.</p>
+  </div>
+</section>
+
+<!-- ===== WARM-UP ===== -->
+<section id="warmup">
+  <span class="section-tag">// Warm-Up &amp; Mobility</span>
+  <h2>Seven minutes <span class="em">before any weight</span></h2>
+  <p class="lead">Run through these in order, every session. It wakes up your back, shoulders, hips, and ankle before you load anything. Go gently — you're thawing out, not stretching hard.</p>
+
+  <div class="callout stop">
+    <div class="lbl">Never cut this</div>
+    <p>If your session is running short, cut a set from the main-work supersets — <strong>never the warm-up</strong>. Arriving cold at a loaded exercise is how tweaks happen.</p>
+  </div>
+
+  <div class="grid two">
+    <div class="card"><h4>Blood moving · 2–3 min</h4>
+      <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
+        <li style="padding:5px 0">March in place, arms swinging</li>
+        <li style="padding:5px 0">Arm circles: 10 forward, 10 back</li>
+        <li style="padding:5px 0">Shoulder rolls: 10 each way</li>
+        <li style="padding:5px 0">Gentle neck rolls side to side</li>
+      </ul>
+    </div>
+    <div class="card"><h4>Hips &amp; low back · 2 min</h4>
+      <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
+        <li style="padding:5px 0">Single knee-to-chest — 5s hold, 3× each side</li>
+        <li style="padding:5px 0">Double knee-to-chest — gentle rock side to side</li>
+        <li style="padding:5px 0">Cat-cow — 8 slow reps with your breath</li>
+        <li style="padding:5px 0">Half-kneeling hip flexor stretch — 10–15s each side</li>
+      </ul>
+    </div>
+    <div class="card"><h4>Shoulders · 1 min</h4>
+      <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
+        <li style="padding:5px 0">Arm circles — 10 small + 10 large, each way</li>
+        <li style="padding:5px 0">Wall slides — 8–10 slow reps (also your overhead-press readiness check)</li>
+        <li style="padding:5px 0">Towel / band pull-aparts — 10 reps</li>
+      </ul>
+    </div>
+    <div class="card"><h4>Ankle prep · 2 min</h4>
+      <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
+        <li style="padding:5px 0">Seated ankle alphabet — trace A–Z, both feet</li>
+        <li style="padding:5px 0">Seated heel/toe raises — 2 × 10 each</li>
+        <li style="padding:5px 0">Gentle calf stretch — 15s each side, slight bend in back knee</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="lbl">Movement preview · 1 min</div>
+    <p><strong>5 wall-touch hip hinges</strong> (push hips back to touch a wall) + <strong>5 air squats</strong> (heels on your platform). These tell you how your body feels today — if something feels off, adjust your starting weight accordingly.</p>
+  </div>
+</section>
+
+<!-- ===== ANKLE LADDER ===== -->
+<section id="ankle">
+  <span class="section-tag">// Ankle &amp; Balance Ladder</span>
+  <h2>Rebuilding the <span class="em">ankle</span>, stage by stage</h2>
+  <p class="lead">Do your current stage's drills every session from Week 1 — this isn't optional or supplemental. The ankle is a rehab focus: you're actively building mobility, strength, and confidence, not just working around a problem. <strong>Start at Stage 1.</strong> Tick all three gates before moving up — your body sets the pace.</p>
+
+  <div class="ladder">
+    <div class="stage">
+      <div class="head"><span class="n">1</span><span class="nm">Seated</span><span class="wk">Start here · every week</span></div>
+      <ul>
+        <li>Ankle alphabet — trace A–Z, both feet, both directions</li>
+        <li>Seated heel/toe raises — 2 × 10 each direction</li>
+        <li>Ankle circles — 10 slow each direction, each foot</li>
+      </ul>
+      <div class="gate"><div class="gt">Advance to Stage 2 when all three are true</div>
+        <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
+        <label><input type="checkbox"> No noticeable swelling the morning after either session</label>
+        <label><input type="checkbox"> You feel confident in the joint — no hesitation or guarding</label>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="head"><span class="n">2</span><span class="nm">Supported Standing</span><span class="wk">Indicative weeks 3–6</span></div>
+      <ul>
+        <li>Supported single-leg balance — 10–20s, 3 holds each foot (fingertips on wall/counter)</li>
+        <li>Supported calf raises (bilateral) — 2 × 10, slow lower, brief pause at top</li>
+        <li>Heel walks + toe walks — short 4–5 step strips each way</li>
+      </ul>
+      <div class="gate"><div class="gt">Advance to Stage 3 when all three are true</div>
+        <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
+        <label><input type="checkbox"> No noticeable swelling the morning after either session</label>
+        <label><input type="checkbox"> You feel confident in the joint — no hesitation or guarding</label>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="head"><span class="n">3</span><span class="nm">Unassisted Single-Leg</span><span class="wk">Indicative weeks 7–12</span></div>
+      <ul>
+        <li>Single-leg balance, eyes open — 20–30s, 3 holds each foot, no wall contact</li>
+        <li>Single-leg balance, eyes closed (optional) — 10–15s once eyes-open is steady</li>
+        <li>Single-leg calf raises — start 5/side, build toward 10, hand hovering near wall</li>
+      </ul>
+      <div class="gate"><div class="gt">Advance to Stage 4 when all three are true</div>
+        <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
+        <label><input type="checkbox"> No noticeable swelling the morning after either session</label>
+        <label><input type="checkbox"> You feel confident in the joint — no hesitation or guarding</label>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="head"><span class="n">4</span><span class="nm">Dynamic</span><span class="wk">Indicative week 12+ · still low-impact</span></div>
+      <ul>
+        <li>Weight shifts + slow lateral steps — 4–6 steps each way</li>
+        <li>Slow stair balance work (if available) — controlled descent, use the railing</li>
+        <li>Balance disc / folded-mat standing (optional) — 20–30s per foot</li>
+      </ul>
+      <div class="gate"><div class="gt">Keep going — this is maintenance now</div>
+        <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
+        <label><input type="checkbox"> No noticeable swelling the morning after either session</label>
+        <label><input type="checkbox"> You feel confident in the joint — no hesitation or guarding</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SWELLING ===== -->
+<section id="swelling">
+  <span class="section-tag">// Reading Your Ankle</span>
+  <h2>Green · <span class="em">Yellow</span> · Red</h2>
+  <p class="lead">Some ankle response to new activity is expected — it's coming back into service after years of limited loading. This tells normal from "ease off" from "stop and rest." The ladder's gates mean staying in the <strong>Green</strong> zone.</p>
+
+  <div class="lights">
+    <div class="light g">
+      <div class="badge"><span class="b-dot"></span>Green — keep going</div>
+      <div class="row"><span class="k">Signs</span>Mild puffiness gone by morning. Discomfort ≤ 3/10. Full range of motion intact.</div>
+      <div class="row"><span class="k">Do</span>Continue as planned. Your ankle is adapting normally.</div>
+      <div class="row"><span class="k">Habit</span>~10 min with the ankle elevated above your heart after every session — even when it feels fine.</div>
+    </div>
+    <div class="light y">
+      <div class="badge"><span class="b-dot"></span>Yellow — modify next time</div>
+      <div class="row"><span class="k">Signs</span>Swelling still there next morning, OR noticeably stiffer than baseline, OR soreness above 4/10.</div>
+      <div class="row"><span class="k">Do</span>Halve standing work next session, skip calf/ankle loading. Elevate + ice 15–20 min after.</div>
+      <div class="row"><span class="k">Note</span>Not a mistake — useful feedback, handled sensibly. Don't advance a stage until you're back to Green.</div>
+    </div>
+    <div class="light r">
+      <div class="badge"><span class="b-dot"></span>Red — stop and check in</div>
+      <div class="row"><span class="k">Signs</span>Swelling clearly worse than baseline, heat to the touch, sharp localized pain, or not settling within 24h.</div>
+      <div class="row"><span class="k">Do</span>Rest, elevate, ice. Don't train it until back to baseline. Not improving in 48h → contact your physician or PT.</div>
+      <div class="row"><span class="k">Note</span>Not a failure — the joint needs more time than expected. This is the guide doing its job.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE PLAN ===== -->
+<section id="program">
+  <span class="section-tag">// The Plan</span>
+  <h2>How you <span class="em">get stronger</span></h2>
+  <p class="lead">Strength comes from loading consistently, giving a little more than last time, and recovering well. The way you do that here needs just one decision.</p>
+
+  <div class="rule-box">
+    <div class="tag">The double-progression rule</div>
+    <div class="rule">When you complete all sets at the <span class="hl">top of the rep range</span> for <span class="hl">2 consecutive sessions</span> with good form, add the next PowerBlock increment and return to the bottom of the range.</div>
+  </div>
+
+  <p>That's the whole rule. No percentages, no max-effort testing. <strong>Example (Block 1, range 12–15):</strong> hit 2×15 with clean form and a rep or two to spare → do it again next Session A → then add 2.5&nbsp;lb and drop back to 12, and climb back up to 15 at the new weight.</p>
+
+  <div class="grid three">
+    <div class="card"><h4>When NOT to add weight</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">Reps fell short of the top last time · form broke down · it felt like a genuine 8/10. Staying put and adding a rep <em>is</em> progress.</p></div>
+    <div class="card"><h4>Increments</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">Always try the smallest jump first — 2.5&nbsp;lb. At lighter weights that's a real percentage bump. Give any new weight 2–3 sessions before calling it "too light."</p></div>
+    <div class="card"><h4>The rule is a ceiling</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">It's the <em>maximum</em> speed of progression — never a requirement. A day you stayed at the same weight and moved well is a good session.</p></div>
+  </div>
+
+  <div class="callout stop">
+    <div class="lbl">Bad-day override</div>
+    <p>If your ankle is Yellow/Red, energy is very low, or something aches: <strong>don't increase weight.</strong> Stay where you are or use the 10-Minute Session. For lower-body increases, wait until you've had <strong>two consecutive Green ankle sessions</strong>.</p>
+  </div>
+
+  <!-- BLOCK 1 -->
+  <h3>Block 1 — Build the Foundation · Weeks 1–4</h3>
+  <p style="font-size:15px;color:var(--ink-dim)">Intentionally gentle — this is how you avoid the Week-1 soreness that ends programs. Finishing Week 1 feeling good, not wrecked, is the success metric. You're building the habit, not getting fit in four weeks.</p>
+  <div class="params">
+    <div class="param"><div class="v">2</div><div class="l">Sets</div></div>
+    <div class="param"><div class="v">12–15</div><div class="l">Reps</div></div>
+    <div class="param"><div class="v">5–7</div><div class="l">RPE</div></div>
+  </div>
+  <div class="table-wrap"><table class="sched">
+    <tr><th>Week</th><th>Sets</th><th>Reps</th><th>RPE</th><th>Notes</th></tr>
+    <tr><td class="wk">1</td><td>2</td><td>12–15</td><td>5–6</td><td>Start lighter than you think. Natural tempo. Goal: feel good tomorrow.</td></tr>
+    <tr><td class="wk">2</td><td>2</td><td>12–15</td><td>5–6</td><td>Same weights, or slightly more if Week 1 felt very easy.</td></tr>
+    <tr><td class="wk">3</td><td>2</td><td>12–15</td><td>6–7</td><td>Add a slow lower (2–3 sec) to the RDL and goblet squat.</td></tr>
+    <tr class="deload"><td class="wk">4</td><td>1</td><td>12–15</td><td>4–5</td><td><span class="pill">Deload</span> 1 set, drop weight ~40%, keep full movement. Not going backward.</td></tr>
+  </table></div>
+  <div class="callout warm"><div class="lbl">Block 1 exit criteria</div><p>Both Week-3 sessions done without pain · the patterns feel familiar · ankle hasn't swelled consistently (Green, or Yellow that cleared overnight). If Week 3 was rough, repeating it before deloading is completely fine — the blocks are guardrails, not a race.</p></div>
+
+  <!-- BLOCK 2 -->
+  <h3>Block 2 — Build Real Strength · Weeks 5–10</h3>
+  <p style="font-size:15px;color:var(--ink-dim)">From "getting used to it" to actually training. A third set, a slightly lower rep range so the weight can climb, and the slow eccentric becomes standard. By the end you should feel genuinely stronger — in sessions and in daily life.</p>
+  <div class="params">
+    <div class="param"><div class="v">3</div><div class="l">Sets</div></div>
+    <div class="param"><div class="v">10–12</div><div class="l">Reps</div></div>
+    <div class="param"><div class="v">6–7</div><div class="l">RPE</div></div>
+  </div>
+  <div class="table-wrap"><table class="sched">
+    <tr><th>Week</th><th>Sets</th><th>Reps</th><th>RPE</th><th>Notes</th></tr>
+    <tr><td class="wk">5</td><td>3</td><td>10–12</td><td>6–7</td><td>First week at 3 sets. Use Week-3 weights and build from there.</td></tr>
+    <tr><td class="wk">6</td><td>3</td><td>10–12</td><td>6–7</td><td>Apply double-progression. Ankle Stage 2 available if gates passed.</td></tr>
+    <tr><td class="wk">7</td><td>3</td><td>10–12</td><td>6–7</td><td>Slow eccentric (2–3 sec lower) now standard for squat &amp; hinge.</td></tr>
+    <tr><td class="wk">8</td><td>3</td><td>10–12</td><td>6–7</td><td>Hitting the top of the range consistently? Keep progressing.</td></tr>
+    <tr><td class="wk">9</td><td>3</td><td>10–12</td><td>6–7</td><td>Consider Ankle Stage 3 if Stage 2 gates are all ticked.</td></tr>
+    <tr class="deload"><td class="wk">10</td><td>2</td><td>10–12</td><td>5–6</td><td><span class="pill">Deload</span> 2 sets, ~50% weight. A good week to book that PT visit if you've been putting it off.</td></tr>
+  </table></div>
+  <div class="callout warm"><div class="lbl">Block 2 exit criteria</div><p>3×10 on your primary lifts with controlled form · single-leg balance ~30s both legs (progress, not perfection) · no persistent aches from loading.</p></div>
+
+  <!-- BLOCK 3 -->
+  <h3>Block 3 — Keep Getting Stronger · Weeks 11 onward</h3>
+  <p style="font-size:15px;color:var(--ink-dim)">Open-ended. Keep applying the rule; the rep range drops a little more so the weight keeps climbing meaningfully. Some lifts may go to 4 sets if recovery is good — optional, not required.</p>
+  <div class="params">
+    <div class="param"><div class="v">3–4</div><div class="l">Sets</div></div>
+    <div class="param"><div class="v">8–10</div><div class="l">Reps</div></div>
+    <div class="param"><div class="v">7–8</div><div class="l">RPE</div></div>
+  </div>
+  <div class="table-wrap"><table class="sched">
+    <tr><th>Week</th><th>Sets</th><th>Reps</th><th>RPE</th><th>Notes</th></tr>
+    <tr><td class="wk">11</td><td>3</td><td>8–10</td><td>7–8</td><td>First week at 8–10. Start slightly above your Block 2 top weight.</td></tr>
+    <tr><td class="wk">12</td><td>3</td><td>8–10</td><td>7–8</td><td>Apply double-progression. Ankle Stage 3 available if gates passed.</td></tr>
+    <tr><td class="wk">13</td><td>3</td><td>8–10</td><td>7–8</td><td>Optional: add a 4th set to 1–2 of your strongest exercises.</td></tr>
+    <tr><td class="wk">14</td><td>3</td><td>8–10</td><td>7–8</td><td>Stalled 2+ weeks? Consider an early deload rather than pushing.</td></tr>
+    <tr><td class="wk">15</td><td>3</td><td>8–10</td><td>7–8</td><td>Midway — notice how far you've come since Week 1.</td></tr>
+    <tr class="deload"><td class="wk">16</td><td>2</td><td>8–10</td><td>5–6</td><td><span class="pill">Deload</span> 2 sets, ~50% weight, full movement.</td></tr>
+    <tr><td class="wk">17</td><td>3</td><td>8–10</td><td>7–8</td><td>Back to training. Reset weight if the deload revealed fatigue.</td></tr>
+    <tr><td class="wk">18+</td><td>3–4</td><td>8–10</td><td>7–8</td><td>Continue indefinitely. <span class="pill">Deload</span> every 6 weeks — Weeks 22, 28, …</td></tr>
+  </table></div>
+  <div class="callout"><div class="lbl">Signs you need an unplanned deload</div><p>Persistent joint ache (not the muscle soreness that clears in a day or two) · lifts stalling 2+ weeks at the same weight and reps · motivation dropping sharply for no clear reason. Take a recovery week and come back at reduced load. That's the plan working as designed.</p></div>
+
+  <!-- ADJUST ON THE FLY -->
+  <h3>When to adjust on the fly</h3>
+  <div class="grid two">
+    <div class="card"><h4>Yellow / Red ankle</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Seated/supported exercises only that session, drop to 2 sets, follow the swelling care. Don't advance a ladder stage until two Green sessions.</p></div>
+    <div class="card"><h4>High fatigue / soreness</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Cut to 2 sets, stay at the bottom of the rep range, use an easy weight. A lighter day, not a wasted one.</p></div>
+    <div class="card"><h4>Joint pain in a movement</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Stop that exercise, note it, swap in the named regression. Two sessions in a row → address it, don't push through.</p></div>
+    <div class="card"><h4>Missed a session</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Don't add volume to make up for it. Resume the planned session as written. One miss changes nothing.</p></div>
+    <div class="card"><h4>Everything feels easy</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Green light to progress — but only if you've hit the top of the range for 2 consecutive sessions. Follow the rule.</p></div>
+    <div class="card"><h4>Pelvic floor signal</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Leaking, pressure, or heaviness → scale the load now, reinforce exhale-on-effort every rep. More than once → see a pelvic-floor physiotherapist. Common and treatable.</p></div>
+  </div>
+</section>
+
+<!-- ===== CARDIO ===== -->
+<section id="cardio">
+  <span class="section-tag">// Optional Cardio</span>
+  <h2>Easy miles, <span class="em">when you want them</span></h2>
+  <p class="lead">Cycling here is completely optional and comfort-first — one easy spin on an off-day, never a substitute for a strength session or your ankle drills. The saddle is the only real barrier, so we solve that first. This isn't "a lot of cycling" — it's gentle, joint-friendly movement you might enjoy.</p>
+
+  <div class="callout">
+    <div class="lbl">How it fits</div>
+    <p>If you'd like to ride, aim for <strong>one easy spin on a day you're not lifting</strong> — for example, strength on Monday and Thursday, an optional spin on Saturday. Skip it freely on a busy week or a sore-ankle day. It's a bonus, not a box to tick.</p>
+  </div>
+
+  <h3>Before your first ride — set up for comfort</h3>
+  <p class="lead">Five minutes of setup makes the difference between "that was pleasant" and "I'm never sitting on that again." Do this before you clip in — or in your case, before you hop on.</p>
+
+  <div class="grid two">
+    <div class="card"><h4>Saddle height</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">At the bottom of the pedal stroke your knee should keep a <strong>slight bend</strong> (roughly 25–30°) — not locked straight, not cramped up. Your hips should stay level, not rock side to side. Too high rocks the hips; too low crowds the knees.</p></div>
+    <div class="card"><h4>Fore / aft</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">With the pedals level (3 &amp; 9 o'clock), the front of your forward knee should sit roughly <strong>over the pedal axle</strong>. Slide the saddle forward or back to get there.</p></div>
+    <div class="card"><h4>Saddle tilt</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">Keep the saddle <strong>level</strong>, or tip the nose down just a hair (1–2°) if you feel pressure up front. <strong>Never nose-up</strong> — that's the main comfort killer.</p></div>
+    <div class="card"><h4>Padded shorts</h4><p style="color:var(--ink-dim);font-size:14.5px;margin:0">A pair of <strong>chamois (padded cycling) shorts</strong>, worn with nothing underneath, is the single biggest comfort upgrade. Sit-bone soreness in the first couple of weeks is normal adaptation — not damage.</p></div>
+  </div>
+
+  <div class="callout warm">
+    <div class="lbl">Foot position — protect your ankle (flat pedals)</div>
+    <p>Place the <strong>ball of your foot over the pedal axle</strong> — not your arch or heel. Keep your <strong>ankle neutral at the bottom of the stroke</strong>: don't drive the heel down hard or point your toes. A relaxed, level foot keeps the repaired ankle happy. Pedal smooth circles, not stomps.</p>
+  </div>
+
+  <h3>Your first ride — 8 to 10 minutes, easy</h3>
+  <div class="params">
+    <div class="param"><div class="v">8–10</div><div class="l">Minutes (cap it)</div></div>
+    <div class="param"><div class="v">~50<span style="font-size:14px;color:var(--ink-faint)">w</span></div><div class="l">ERG target</div></div>
+    <div class="param"><div class="v">70–80</div><div class="l">Cadence (rpm)</div></div>
+  </div>
+  <p style="font-size:15px;color:var(--ink-dim)"><strong>Cap your first ride at 8–10 minutes even if you feel great.</strong> This first one is about the saddle and your ankle getting reacquainted with the bike — not fitness. There will be plenty of time to go longer.</p>
+
+  <div class="callout">
+    <div class="lbl">Let the trainer do the work — ERG mode</div>
+    <p>In Zwift, ride in <strong>ERG mode</strong> with the target set to your wattage below. The Kickr Core then <strong>holds that power automatically</strong> — you don't shift gears or fight resistance, you just pedal at a comfortable cadence (around 70–80 rpm). It's the most relaxed, comfort-first way to ride indoors.</p>
+    <p style="margin-top:10px"><strong>The watt number serves you, not the other way around.</strong> Every target below should feel easy enough to <strong>hold a full conversation</strong> (an easy Zone 1–2 effort). If you can't talk in sentences, the wattage is too high — drop it. These numbers are deliberately low starting points, not goals to chase.</p>
+  </div>
+
+  <h3>Duration &amp; power ramp</h3>
+  <p style="font-size:15px;color:var(--ink-dim)">A gentle, optional progression — think roughly one ride a week, but there's no schedule to keep. Repeat any step as long as you like before moving up. If a ride ever feels like work, stay where you are.</p>
+  <div class="table-wrap"><table class="sched">
+    <tr><th>Ride</th><th>Duration</th><th>ERG target</th><th>Cadence</th><th>Effort check</th></tr>
+    <tr><td class="wk">1–2</td><td>8–10 min</td><td>~50 w</td><td>70–80 rpm</td><td>Very easy — chatting freely the whole time.</td></tr>
+    <tr><td class="wk">3–4</td><td>12–15 min</td><td>~55 w</td><td>70–80 rpm</td><td>Easy. Sit-bones, not legs, set the limit early on.</td></tr>
+    <tr><td class="wk">5–6</td><td>15–20 min</td><td>~60 w</td><td>75–85 rpm</td><td>Easy-steady. Still fully conversational.</td></tr>
+    <tr><td class="wk">7–8</td><td>20 min</td><td>~60–65 w</td><td>75–85 rpm</td><td>Comfortable. A little warm, never breathless.</td></tr>
+    <tr><td class="wk">9+</td><td>20–30 min</td><td>~65–75 w</td><td>75–85 rpm</td><td>Your steady "feels good" ride. Optional: a few gentle 1-min lifts to ~80 w if you're feeling strong — then settle back.</td></tr>
+  </table></div>
+  <div class="callout warm"><div class="lbl">Adjust the watts to you</div><p>These targets are conservative defaults, set low on purpose because there's no fitness test here. If ~50 w feels like nothing, nudge a target up by 5 w; if any number makes conversation hard, drop it 5–10 w. The conversational check always wins over the number on the screen.</p></div>
+
+  <h3>Comfort, ankle &amp; when to skip</h3>
+  <div class="grid two">
+    <div class="card"><h4>Saddle comfort</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Early on, lift off the saddle for a few seconds every few minutes. Soreness that fades within a day is normal adaptation. <strong>Numbness or persistent pain</strong> means stop and tweak the fit (usually tilt or height) or shorten the ride.</p></div>
+    <div class="card"><h4>Your ankle comes first</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">If your ankle is <strong>Yellow or Red</strong> (see <a href="#swelling">Swelling</a>), skip the spin — cycling is optional and your ankle ladder takes priority. Keep the foot neutral, the cadence easy, and the gears light; never grind.</p></div>
+    <div class="card"><h4>Pelvic floor</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">Same habit as your lifting: relaxed breathing, no straining. If you feel pressure or heaviness, ease the watts back. Gentle spinning shouldn't provoke it.</p></div>
+    <div class="card"><h4>It's a bonus, never a debt</h4><p style="color:var(--ink-dim);font-size:14px;margin:0">A missed ride costs you nothing — there's nothing to make up. Cardio never replaces a strength session or your ankle drills. On a good week it's a pleasant add-on; on a hard week it's the first thing to drop.</p></div>
+  </div>
+</section>
+
+<!-- ===== TRACKER ===== -->
+<section id="tracker">
+  <span class="section-tag">// Tracker</span>
+  <h2>Log it in <span class="em">90 seconds</span></h2>
+  <p class="lead">Pick the session, fill in the numbers, save. Your last session of the same type shows up automatically under each exercise — no math, no flipping back. Everything saves in this browser on this device.</p>
+
+  <div class="tracker">
+    <div class="tk-toolbar">
+      <div class="seg" id="seg-session">
+        <button data-s="A" class="on">Session A</button>
+        <button data-s="B">Session B</button>
+      </div>
+      <div class="seg" id="seg-dose">
+        <button data-d="Full" class="on">Full</button>
+        <button data-d="Min">Min dose</button>
+      </div>
+      <div class="tk-field">Date <input type="date" id="tk-date"></div>
+      <div class="tk-spacer"></div>
+    </div>
+
+    <div class="tk-head"><div>Exercise</div><div>Weight</div><div>Reps</div><div>RPE</div></div>
+    <div id="tk-rows"></div>
+
+    <div class="tk-meta">
+      <div class="blk">
+        <div class="lbl">Ankle Drill — stage today</div>
+        <div class="chip-row" id="chips-stage">
+          <span class="chip stage" data-v="1">1</span>
+          <span class="chip stage" data-v="2">2</span>
+          <span class="chip stage" data-v="3">3</span>
+          <span class="chip stage" data-v="4">4</span>
+        </div>
+      </div>
+      <div class="blk">
+        <div class="lbl">Ankle status</div>
+        <div class="chip-row" id="chips-ankle">
+          <span class="chip" data-v="OK">OK</span>
+          <span class="chip" data-v="Ached">Ached</span>
+          <span class="chip" data-v="Swelled">Swelled</span>
+        </div>
+      </div>
+      <div class="blk" style="grid-column:1/-1">
+        <div class="lbl">How I felt</div>
+        <textarea id="tk-felt" placeholder="One sentence is plenty…"></textarea>
+      </div>
+    </div>
+
+    <div class="tk-actions">
+      <button class="btn primary" id="tk-save">Save session</button>
+      <button class="btn ghost" id="tk-clear">Clear</button>
+      <div class="tk-spacer"></div>
+      <span class="toast" id="tk-toast">Saved ✓</span>
+    </div>
+  </div>
+
+  <div class="history">
+    <div class="h-title">History
+      <span class="tk-spacer" style="flex:1"></span>
+      <button class="btn ghost" id="tk-sync" style="padding:7px 14px;font-size:11px">Sync</button>
+      <button class="btn ghost" id="tk-export" style="padding:7px 14px;font-size:11px">Export</button>
+      <button class="btn ghost" id="tk-import" style="padding:7px 14px;font-size:11px">Import</button>
+      <input type="file" id="tk-file" accept="application/json" style="display:none">
+    </div>
+    <div id="tk-history"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="signoff">You don't have to be perfect. You have to keep showing up — and this plan is built so you can.</div>
+  <div class="disclaimer">This is a fitness plan, not medical advice. With a repaired ankle, pelvic-floor considerations, and a long layoff, it's worth a conversation with your physician, a pelvic-floor physiotherapist, and an ankle/ortho PT — especially before you start, and any time something flagged here comes up.</div>
+  <div class="fine">Home Strength Program · gentle · low-impact · joint-respecting</div>
+</footer>
+
+<script>
+/* ============== EXERCISE LIBRARY DATA ============== */
+const EXERCISES = [
+  { pattern:'Squat Pattern', name:'Heel-Elevated Goblet Squat', demand:'low',
+    how:'Heels on a low plate or folded mat (1–2"), one dumbbell at your chest. Sit down between your knees, heels down, then stand — driving through your whole foot.',
+    breathe:'Exhale as you stand up. Never hold.',
+    ankle:'Stop if you feel pinching at the front of the ankle. If your heels want to rise, the platform is too low or the weight too heavy for today.',
+    easier:'Box squat — sit to a higher bench, pause, stand back up.',
+    harder:'Add a second dumbbell, or lower the box to increase depth.' },
+  { pattern:'Hip Hinge', name:'Dumbbell Romanian Deadlift (RDL)', demand:'low',
+    how:'Dumbbells in front of your thighs, soft knees. Push your hips back (not down) to mid-shin depth, feeling your hamstrings. Drive hips forward to stand, chest proud.',
+    breathe:'Exhale as you stand up. Inhale as you lower.',
+    ankle:'No deep ankle flex needed. Stop if you feel any ache during the standing phase.',
+    easier:'Wall hip hinge — stand 12" from a wall, push hips back to touch it, no weight.',
+    harder:'More weight, or a slower lowering phase (Block 2+, not Week 1).' },
+  { pattern:'Push', name:'Incline Dumbbell Press (30–45°)', demand:null,
+    how:'Bench at 30–45°. Dumbbells at chest level, elbows 45–60° from your sides (not flared). Press up and slightly together, lower with control.',
+    breathe:'Exhale as you press up. Never hold.',
+    ankle:'Seated/reclined — no ankle demand.',
+    easier:'Floor press — lie flat, range naturally limited to a safe arc.',
+    harder:'Move toward flat bench as shoulder mobility improves, or add weight.' },
+  { pattern:'Push', name:'Seated Dumbbell Press (neutral grip)', demand:null,
+    how:'Sit upright or slightly reclined, neutral/hammer grip (palms facing). Press to eye level or slightly above — not locked out overhead. Lower to shoulder height.',
+    breathe:'Exhale as you press up. Never hold.',
+    ankle:'Seated — no ankle demand.',
+    easier:'Seated front raise — raise dumbbells from thigh to shoulder height, no pressing.',
+    harder:'Add weight, or lower the bench angle slightly toward incline.' },
+  { pattern:'Pull', name:'Seated Single-Arm Dumbbell Row', demand:null,
+    how:'Sit on the bench edge, one hand bracing on your thigh. Other arm hangs straight with a dumbbell. Pull to your hip, elbow close. Lower with control.',
+    breathe:'Exhale as you pull. Inhale as you lower.',
+    ankle:'Seated/supported — no ankle demand.',
+    easier:'Resistance-band seated row — anchor a band low, row both arms.',
+    harder:'Add weight, or progress to the supported bent-over row.' },
+  { pattern:'Pull', name:'Bent-Over Dumbbell Row', demand:null,
+    how:'Dumbbell in each hand, hinge forward toward parallel — flat back, chest on an inclined bench if your low back fatigues. Pull both dumbbells to your hips, elbows close.',
+    breathe:'Exhale as you pull. Inhale as you lower.',
+    ankle:'Supported hinge — no ankle demand.',
+    easier:'Seated single-arm row (the Session A pull).',
+    harder:'Add weight, or a brief pause at the top of each rep.' },
+  { pattern:'Core (Anti-Extension)', name:'Dead Bug', demand:null,
+    how:'On your back, arms toward the ceiling, knees bent 90° in tabletop. Lower one arm overhead while straightening the opposite leg. Return, switch. Keep your low back pressed flat — that contact is the exercise.',
+    breathe:'Exhale as you extend arm and leg. Inhale to return.',
+    ankle:'Fully unloaded. If your low back lifts, shorten how far you lower the leg.',
+    easier:'Legs only — both arms up, lower one leg at a time.',
+    harder:'Hold a light dumbbell in each hand while you extend.' },
+  { pattern:'Core (Anti-Extension)', name:'Bird-Dog', demand:null,
+    how:'Hands under shoulders, knees under hips. Extend one arm forward and the opposite leg back together, spine neutral, hips level (no rotation). Hold briefly, return, switch.',
+    breathe:'Exhale as you extend. Inhale to return.',
+    ankle:'Fully unloaded. Focus on keeping hips square to the floor.',
+    easier:'Arm only or leg only until the full pattern feels comfortable.',
+    harder:'Pause at full extension for 3 seconds before returning.' },
+  { pattern:'Activation', name:'Glute Bridge', demand:null,
+    how:'On your back, knees bent, feet flat ~hip-width. Drive hips up to a straight knee-to-shoulder line, then lower with control.',
+    breathe:'Exhale as you press up.',
+    ankle:'No ankle demand.',
+    easier:'Smaller range — lift hips just a few inches.',
+    harder:'Pause at the top, or progress toward a hip thrust (Block 2+).' },
+];
+
+const DEMAND = { low:['d-low','Dorsiflexion · Low'], mod:['d-mod','Dorsiflexion · Mod'], high:['d-high','Dorsiflexion · High'] };
+
+/* Conservative Session-1 starting points. Deliberately light — adjust by feel (RPE 5–6). */
+const START = {
+  'Heel-Elevated Goblet Squat': 'one <strong>10 lb</strong> dumbbell — or just the box-squat with no weight if that already feels like plenty',
+  'Dumbbell Romanian Deadlift (RDL)': '<strong>5 lb</strong> in each hand',
+  'Incline Dumbbell Press (30–45°)': '<strong>5 lb</strong> in each hand',
+  'Seated Dumbbell Press (neutral grip)': '<strong>5 lb</strong> in each hand',
+  'Seated Single-Arm Dumbbell Row': '<strong>10 lb</strong>',
+  'Bent-Over Dumbbell Row': '<strong>5 lb</strong> in each hand',
+  'Dead Bug': 'bodyweight — no weight to start',
+  'Bird-Dog': 'bodyweight — no weight to start',
+  'Glute Bridge': 'bodyweight — no weight to start',
+};
+
+(function renderExercises(){
+  const g = document.getElementById('ex-grid');
+  g.innerHTML = EXERCISES.map(e => {
+    const dot = e.demand ? `<span class="dot-tag"><span class="demand-dot ${DEMAND[e.demand][0]}"></span>${DEMAND[e.demand][1]}</span>` : '';
+    const start = START[e.name] ? `<div class="start-here"><span class="sh-k">Start with</span>${START[e.name]}</div>` : '';
+    return `<div class="card">
+      <div class="pattern-label">${e.pattern}</div>
+      <div class="head-row"><h4 style="margin-bottom:0">${e.name}</h4>${dot}</div>
+      ${start}
+      <details>
+        <summary>How to do it</summary>
+        <div class="detail-body">
+          <div class="spec"><span class="k">How</span><span class="v">${e.how}</span></div>
+          <div class="spec"><span class="k">Breathe</span><span class="v">${e.breathe}</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">${e.ankle}</span></div>
+          <div class="spec"><span class="k">Easier</span><span class="v">${e.easier}</span></div>
+          <div class="spec"><span class="k">Harder</span><span class="v">${e.harder}</span></div>
+        </div>
+      </details>
+    </div>`;
+  }).join('');
+})();
+
+/* ============== TRACKER ============== */
+const SESS = {
+  A: ['Heel-Elevated Goblet Squat','Incline Dumbbell Press','Seated Single-Arm Row','Dead Bug'],
+  B: ['Dumbbell RDL','Seated Dumbbell Press','Bent-Over Dumbbell Row','Bird-Dog'],
+};
+/* Conservative starting suggestions shown until you have a logged "last time". */
+const STARTW = {
+  'Heel-Elevated Goblet Squat': '~10 lb (or bodyweight box squat)',
+  'Incline Dumbbell Press': '~5 lb each',
+  'Seated Single-Arm Row': '~10 lb',
+  'Dead Bug': 'bodyweight',
+  'Dumbbell RDL': '~5 lb each',
+  'Seated Dumbbell Press': '~5 lb each',
+  'Bent-Over Dumbbell Row': '~5 lb each',
+  'Bird-Dog': 'bodyweight',
+};
+const KEY = 'hs_log_v1';
+let state = { session:'A', dose:'Full', stage:'', ankle:'' };
+
+/* ---- Cloud sync config ----
+   Paste the Google Apps Script Web App URL into SYNC.url after you deploy it.
+   SYNC.secret must match the SECRET constant in that Apps Script. */
+const SYNC = {
+  url: '',                         // e.g. 'https://script.google.com/macros/s/AKfy.../exec'
+  secret: 'hs_8f3kQ2zP9xR7vL4m',
+};
+function syncOne(rec){
+  if (!SYNC.url) return Promise.reject('no-url');
+  return fetch(SYNC.url, { method:'POST', mode:'no-cors', body: JSON.stringify({ secret: SYNC.secret, record: rec }) });
+}
+function markSynced(id){ const arr = load(); const r = arr.find(x=>x.id===id); if (r){ r.synced = true; persist(arr); } }
+function pushUnsynced(){
+  if (!SYNC.url){ toast('Add the Sheet URL first'); return; }
+  const pending = load().filter(x=>!x.synced);
+  if (!pending.length){ toast('All synced ✓'); return; }
+  Promise.allSettled(pending.map(r => syncOne(r).then(()=>markSynced(r.id))))
+    .then(()=>{ renderHistory(); toast('Synced ✓'); });
+}
+
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
+function persist(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
+
+function lastOfType(letter){
+  const arr = load().filter(x => x.session === letter);
+  arr.sort((a,b) => (a.date < b.date ? 1 : -1));
+  return arr[0] || null;
+}
+
+function rowsFor(letter){
+  const last = lastOfType(letter);
+  const lastMap = {};
+  if (last) last.entries.forEach(en => lastMap[en.name] = en);
+  document.getElementById('tk-rows').innerHTML = SESS[letter].map((nm,i) => {
+    const l = lastMap[nm];
+    const hint = l && (l.weight||l.reps||l.rpe)
+      ? `<span class="last">last: ${l.weight||'–'} × ${l.reps||'–'}  RPE ${l.rpe||'–'}</span>`
+      : (STARTW[nm] ? `<span class="last start">start: ${STARTW[nm]}</span>` : '');
+    return `<div class="tk-row" data-ex="${nm}">
+      <div><span class="ex-name">${nm}</span>${hint}</div>
+      <input class="wt" inputmode="decimal" placeholder="lb" data-f="weight">
+      <input inputmode="numeric" placeholder="reps" data-f="reps">
+      <input inputmode="numeric" placeholder="1–10" data-f="rpe">
+    </div>`;
+  }).join('');
+}
+
+function setSeg(group, val, attr){
+  document.querySelectorAll(`#${group} button`).forEach(b => b.classList.toggle('on', b.dataset[attr] === val));
+}
+
+function toast(msg){
+  const t = document.getElementById('tk-toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+function collect(){
+  const entries = [...document.querySelectorAll('#tk-rows .tk-row')].map(r => ({
+    name: r.dataset.ex,
+    weight: r.querySelector('[data-f=weight]').value.trim(),
+    reps: r.querySelector('[data-f=reps]').value.trim(),
+    rpe: r.querySelector('[data-f=rpe]').value.trim(),
+  }));
+  return {
+    id: 'e' + Date.now() + Math.random().toString(36).slice(2,6),
+    date: document.getElementById('tk-date').value,
+    session: state.session, dose: state.dose,
+    stage: state.stage, ankle: state.ankle,
+    felt: document.getElementById('tk-felt').value.trim(),
+    entries,
+  };
+}
+
+function renderHistory(){
+  const arr = load().slice().sort((a,b)=> (a.date < b.date ? 1 : -1));
+  const host = document.getElementById('tk-history');
+  if (!arr.length){ host.innerHTML = '<p class="empty">No sessions logged yet. Your first one will show up here.</p>'; return; }
+  host.innerHTML = arr.map(s => {
+    const exLines = s.entries.filter(e=>e.weight||e.reps||e.rpe)
+      .map(e=>`<div class="ex"><span>${e.name}</span><span class="v">${e.weight||'–'} × ${e.reps||'–'} · RPE ${e.rpe||'–'}</span></div>`).join('')
+      || '<div class="ex"><span class="empty">No numbers recorded</span></div>';
+    const felt = s.felt ? `<div class="felt">"${s.felt}"</div>` : '';
+    const stage = s.stage ? ` · Ankle stage ${s.stage}` : '';
+    return `<div class="hist-item" data-id="${s.id}">
+      <div class="hist-head">
+        <span class="date">${s.date || '—'}</span>
+        <span class="tag ${s.session}">Session ${s.session}${s.dose==='Min'?' · Min':''}</span>
+        ${s.ankle?`<span class="ank ${s.ankle}">● ${s.ankle}</span>`:''}
+        <span class="grow"></span>
+        <span class="synced" title="${s.synced?'Synced to your Sheet':'Saved on this device — not synced yet'}" style="color:${s.synced?'var(--accent)':'var(--ink-faint)'};font-size:12px">${s.synced?'☁ synced':'○ local'}</span>
+        <button data-del="${s.id}">Delete</button>
+      </div>
+      <div class="hist-body">${exLines}${felt}<div style="margin-top:8px;font-size:12px;color:var(--ink-faint)">${('Logged'+stage)}</div></div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- wiring ---- */
+document.querySelectorAll('#seg-session button').forEach(b => b.onclick = () => {
+  state.session = b.dataset.s; setSeg('seg-session', state.session, 's'); rowsFor(state.session);
+});
+document.querySelectorAll('#seg-dose button').forEach(b => b.onclick = () => {
+  state.dose = b.dataset.d; setSeg('seg-dose', state.dose, 'd');
+});
+document.querySelectorAll('#chips-stage .chip').forEach(c => c.onclick = () => {
+  const on = c.classList.contains('on');
+  document.querySelectorAll('#chips-stage .chip').forEach(x=>x.classList.remove('on'));
+  if (!on){ c.classList.add('on'); state.stage = c.dataset.v; } else { state.stage=''; }
+});
+document.querySelectorAll('#chips-ankle .chip').forEach(c => c.onclick = () => {
+  const on = c.classList.contains('on');
+  document.querySelectorAll('#chips-ankle .chip').forEach(x=>x.classList.remove('on'));
+  if (!on){ c.classList.add('on'); state.ankle = c.dataset.v; } else { state.ankle=''; }
+});
+
+document.getElementById('tk-save').onclick = () => {
+  const rec = collect();
+  if (!rec.date){ toast('Pick a date first'); return; }
+  const hasData = rec.entries.some(e=>e.weight||e.reps||e.rpe) || rec.felt || rec.ankle;
+  if (!hasData){ toast('Nothing to save yet'); return; }
+  rec.synced = false;
+  const arr = load(); arr.push(rec); persist(arr);
+  renderHistory(); rowsFor(state.session);
+  if (SYNC.url){
+    toast('Saved ✓ syncing…');
+    syncOne(rec).then(()=>{ markSynced(rec.id); renderHistory(); }).catch(()=>{ toast('Saved ✓ (will sync later)'); });
+  } else {
+    toast('Saved ✓');
+  }
+};
+
+document.getElementById('tk-clear').onclick = () => {
+  document.querySelectorAll('#tk-rows input').forEach(i=>i.value='');
+  document.getElementById('tk-felt').value='';
+  document.querySelectorAll('#chips-stage .chip,#chips-ankle .chip').forEach(c=>c.classList.remove('on'));
+  state.stage=''; state.ankle='';
+};
+
+document.getElementById('tk-history').addEventListener('click', (e) => {
+  const del = e.target.closest('[data-del]');
+  if (del){ e.stopPropagation();
+    persist(load().filter(x => x.id !== del.dataset.del));
+    renderHistory(); rowsFor(state.session); return; }
+  const item = e.target.closest('.hist-item');
+  if (item) item.classList.toggle('open');
+});
+
+document.getElementById('tk-sync').onclick = pushUnsynced;
+document.getElementById('tk-export').onclick = () => {
+  const blob = new Blob([JSON.stringify(load(), null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'hstrength-training-log.json';
+  a.click(); URL.revokeObjectURL(a.href);
+};
+document.getElementById('tk-import').onclick = () => document.getElementById('tk-file').click();
+document.getElementById('tk-file').onchange = (ev) => {
+  const f = ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const incoming = JSON.parse(r.result);
+      if (!Array.isArray(incoming)) throw 0;
+      const cur = load();
+      const seen = new Set(cur.map(x=>x.id));
+      incoming.forEach(x => { if (!seen.has(x.id)) cur.push(x); });
+      persist(cur); renderHistory(); rowsFor(state.session); toast('Imported ✓');
+    } catch(e){ toast('Could not read that file'); }
+  };
+  r.readAsText(f);
+};
+
+/* ---- init ---- */
+(function init(){
+  const d = new Date();
+  const iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('tk-date').value = iso;
+  rowsFor('A'); renderHistory();
+})();
+
+/* ---- self-screen ---- */
+(function screen(){
+  const qs = [...document.querySelectorAll('.screen-q')];
+  const result = document.getElementById('screen-result');
+  const clear = document.getElementById('screen-clear');
+  function update(){
+    const any = qs.some(q => q.checked);
+    result.style.display = any ? 'block' : 'none';
+    clear.style.display = any ? 'none' : 'block';
+  }
+  qs.forEach(q => q.addEventListener('change', update));
+  update();
+})();
+</script>
+</body>
+</html>

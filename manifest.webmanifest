@@ -1,0 +1,11 @@
+{
+  "name": "Home Strength Program",
+  "short_name": "Strength",
+  "description": "A gentle, low-impact home strength program and session tracker.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#15120e",
+  "theme_color": "#15120e",
+  "orientation": "portrait"
+}
