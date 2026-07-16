@@ -103,6 +103,24 @@
   .stat .num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(34px, 5vw, 54px); line-height: 1; color: var(--accent); }
   .stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
 
+  /* hero call-to-action */
+  .cta-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 14px; margin-bottom: 44px; position: relative; z-index: 2; }
+  .btn-hero { display: inline-flex; flex-direction: column; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; text-decoration: none; border-radius: 10px; padding: 14px 26px; transition: all .15s; }
+  .btn-hero.primary { background: var(--accent); color: var(--bg); }
+  .btn-hero.primary:hover { background: var(--green); }
+  .btn-hero.primary .sub { font-size: 10px; font-weight: 400; letter-spacing: 0.06em; text-transform: none; opacity: 0.8; margin-top: 4px; }
+  .btn-hero.ghost { border: 1px solid var(--rule); color: var(--ink-dim); }
+  .btn-hero.ghost:hover { color: var(--ink); border-color: var(--ink-faint); }
+
+  /* "up next" badge on the suggested session card */
+  .up-next { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: var(--accent); color: var(--bg); border-radius: 20px; padding: 3px 10px; margin-left: 10px; font-weight: 700; }
+
+  /* video demo links */
+  .demo-link { display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm); text-decoration: none; margin-top: 14px; }
+  .demo-link:hover { color: var(--accent); }
+  .mini-demo { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--warm); text-decoration: none; margin-left: 8px; white-space: nowrap; }
+  .mini-demo:hover { color: var(--accent); }
+
   /* ===== SECTIONS ===== */
   section { padding: 76px 6vw; position: relative; z-index: 2; }
   section + section { border-top: 1px solid var(--rule); }
@@ -345,6 +363,13 @@
   </div>
   <h1 class="title">Stronger,<br>with <span class="accent">less pain</span></h1>
   <p class="subtitle">A gentle, low-impact strength program built for your body, your ankle, and your time — designed to be something you can actually keep doing. Adherence beats "optimal." Always.</p>
+  <div class="cta-row">
+    <a class="btn-hero primary" id="today-btn" href="#sessions">
+      <span class="t-main">Today's workout · Session A</span>
+      <span class="sub t-sub">First session? Start with Session A</span>
+    </a>
+    <a class="btn-hero ghost" href="#tracker">Open the tracker</a>
+  </div>
   <div class="stats-row">
     <div class="stat"><div class="num">2</div><div class="label">Sessions / week</div></div>
     <div class="stat"><div class="num">~30</div><div class="label">Minutes each</div></div>
@@ -456,7 +481,7 @@
 
     <!-- SESSION A -->
     <div class="card">
-      <div class="pattern-label">Session A</div>
+      <div class="pattern-label">Session A<span class="up-next" id="badge-A" hidden>← Up next</span></div>
       <h4>Squat · Push · Row</h4>
       <table class="budget">
         <tr><td>Warm-Up &amp; Mobility</td><td>7 min</td></tr>
@@ -471,8 +496,8 @@
         <summary>Activation (3 min)</summary>
         <div class="detail-body">
           <div class="spec"><span class="k">Breaths</span><span class="v">3 diaphragmatic breaths — expand the lower ribcage, exhale <strong>completely</strong>, notice the pelvic floor lift. No breath-holding.</span></div>
-          <div class="spec"><span class="k">Bridge</span><span class="v">Glute bridge — 2 × 10. Drive hips to a straight knee-to-shoulder line; exhale up.</span></div>
-          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch — 3 × 5-sec holds each side. Front heel flat, drive knee gently toward the wall.</span></div>
+          <div class="spec"><span class="k">Bridge</span><span class="v"><a href="#ex-glute-bridge">Glute bridge</a> — 2 × 10. Drive hips to a straight knee-to-shoulder line; exhale up.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+wall+stretch" target="_blank" rel="noopener">▶ demo</a> — 3 × 5-sec holds each side. Front heel flat, drive knee gently toward the wall.</span></div>
         </div>
       </details>
 
@@ -480,8 +505,8 @@
         <summary>Main Work — Superset A</summary>
         <div class="detail-body">
           <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">A1, rest 15s, A2, rest 90s = one round.</p>
-          <div class="spec"><span class="k">A1</span><span class="v"><strong>Heel-Elevated Goblet Squat</strong> — 2×12–15 (Block 1) / 3×10–12 (Block 2+). Exhale up. <em>Start ~10 lb (or bodyweight box squat).</em></span></div>
-          <div class="spec"><span class="k">A2</span><span class="v"><strong>Incline Dumbbell Press</strong> (30–45°) — 2×12–15 / 3×10–12. Exhale as you press. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">A1</span><span class="v"><strong><a href="#ex-heel-elevated-goblet-squat">Heel-Elevated Goblet Squat</a></strong> — 2×12–15 (Block 1) / 3×10–12 (Block 2+). Exhale up. <em>Start ~10 lb (or bodyweight box squat).</em></span></div>
+          <div class="spec"><span class="k">A2</span><span class="v"><strong><a href="#ex-incline-dumbbell-press-30-45">Incline Dumbbell Press</a></strong> (30–45°) — 2×12–15 / 3×10–12. Exhale as you press. <em>Start ~5 lb each hand.</em></span></div>
         </div>
       </details>
 
@@ -489,24 +514,24 @@
         <summary>Main Work — Superset B</summary>
         <div class="detail-body">
           <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">B1, rest 15s, B2, rest 60s = one round.</p>
-          <div class="spec"><span class="k">B1</span><span class="v"><strong>Seated Single-Arm Row</strong> — 2×12–15/side / 3×10–12/side. Exhale as you pull. <em>Start ~10 lb.</em></span></div>
-          <div class="spec"><span class="k">B2</span><span class="v"><strong>Dead Bug</strong> — 2×8/side / 3×8–10/side. Keep your low back flat to the floor. <em>Bodyweight.</em></span></div>
+          <div class="spec"><span class="k">B1</span><span class="v"><strong><a href="#ex-seated-single-arm-dumbbell-row">Seated Single-Arm Row</a></strong> — 2×12–15/side / 3×10–12/side. Exhale as you pull. <em>Start ~10 lb.</em></span></div>
+          <div class="spec"><span class="k">B2</span><span class="v"><strong><a href="#ex-dead-bug">Dead Bug</a></strong> — 2×8/side / 3×8–10/side. Keep your low back flat to the floor. <em>Bodyweight.</em></span></div>
         </div>
       </details>
 
       <details>
         <summary>Block 2+ · Ankle Drill · Cooldown</summary>
         <div class="detail-body">
-          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: Hip Thrust 3×10–12 + Band/Towel Pull-Apart 3×12–15.</span></div>
+          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: <a href="https://www.youtube.com/results?search_query=dumbbell+hip+thrust+form" target="_blank" rel="noopener">Hip Thrust</a> 3×10–12 + <a href="https://www.youtube.com/results?search_query=band+pull+apart+exercise" target="_blank" rel="noopener">Band/Towel Pull-Apart</a> 3×12–15.</span></div>
           <div class="spec"><span class="k">Ankle</span><span class="v">Your current <a href="#ankle">Ankle Ladder</a> stage (3 min). Unsure? Start at Stage 1.</span></div>
-          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor stretch · supine hamstring stretch · chest-opening bench stretch. 20–30s each.</span></div>
+          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=half+kneeling+hip+flexor+stretch" target="_blank" rel="noopener">▶ demo</a> · supine hamstring stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=supine+hamstring+stretch" target="_blank" rel="noopener">▶ demo</a> · chest-opening bench stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=chest+opening+stretch+on+bench" target="_blank" rel="noopener">▶ demo</a>. 20–30s each.</span></div>
         </div>
       </details>
     </div>
 
     <!-- SESSION B -->
     <div class="card">
-      <div class="pattern-label">Session B</div>
+      <div class="pattern-label">Session B<span class="up-next" id="badge-B" hidden>← Up next</span></div>
       <h4>Hinge · Press · Row</h4>
       <table class="budget">
         <tr><td>Warm-Up &amp; Mobility</td><td>7 min</td></tr>
@@ -521,8 +546,8 @@
         <summary>Activation (3 min)</summary>
         <div class="detail-body">
           <div class="spec"><span class="k">Breaths</span><span class="v">Same as Session A — 3 slow diaphragmatic breaths, full exhale, pelvic floor lift.</span></div>
-          <div class="spec"><span class="k">Bridge</span><span class="v">Glute bridge — 2 × 10. Exhale up, lower with control.</span></div>
-          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch — 3 × 5-sec holds each side.</span></div>
+          <div class="spec"><span class="k">Bridge</span><span class="v"><a href="#ex-glute-bridge">Glute bridge</a> — 2 × 10. Exhale up, lower with control.</span></div>
+          <div class="spec"><span class="k">Ankle</span><span class="v">Dorsiflexion wall stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+wall+stretch" target="_blank" rel="noopener">▶ demo</a> — 3 × 5-sec holds each side.</span></div>
         </div>
       </details>
 
@@ -530,8 +555,8 @@
         <summary>Main Work — Superset A</summary>
         <div class="detail-body">
           <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">A1, rest 15s, A2, rest 90s = one round.</p>
-          <div class="spec"><span class="k">A1</span><span class="v"><strong>Dumbbell Romanian Deadlift</strong> — 2×12–15 / 3×10–12. Block 1: lower only to mid-shin, natural tempo. <em>Start ~5 lb each hand.</em></span></div>
-          <div class="spec"><span class="k">A2</span><span class="v"><strong>Seated Dumbbell Press</strong> (neutral grip) — 2×12–15 / 3×10–12. Press to eye level, not locked overhead. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">A1</span><span class="v"><strong><a href="#ex-dumbbell-romanian-deadlift-rdl">Dumbbell Romanian Deadlift</a></strong> — 2×12–15 / 3×10–12. Block 1: lower only to mid-shin, natural tempo. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">A2</span><span class="v"><strong><a href="#ex-seated-dumbbell-press-neutral-grip">Seated Dumbbell Press</a></strong> (neutral grip) — 2×12–15 / 3×10–12. Press to eye level, not locked overhead. <em>Start ~5 lb each hand.</em></span></div>
         </div>
       </details>
 
@@ -539,17 +564,17 @@
         <summary>Main Work — Superset B</summary>
         <div class="detail-body">
           <p style="font-size:13px;color:var(--ink-faint);margin:0 0 10px">B1, rest 15s, B2, rest 60s = one round.</p>
-          <div class="spec"><span class="k">B1</span><span class="v"><strong>Bent-Over Dumbbell Row</strong> — 2×12–15 / 3×10–12. Flat back; chest on an incline bench if your low back tires. <em>Start ~5 lb each hand.</em></span></div>
-          <div class="spec"><span class="k">B2</span><span class="v"><strong>Bird-Dog</strong> — 2×8/side / 3×8–10/side. Hips square, no rotation. <em>Bodyweight.</em></span></div>
+          <div class="spec"><span class="k">B1</span><span class="v"><strong><a href="#ex-bent-over-dumbbell-row">Bent-Over Dumbbell Row</a></strong> — 2×12–15 / 3×10–12. Flat back; chest on an incline bench if your low back tires. <em>Start ~5 lb each hand.</em></span></div>
+          <div class="spec"><span class="k">B2</span><span class="v"><strong><a href="#ex-bird-dog">Bird-Dog</a></strong> — 2×8/side / 3×8–10/side. Hips square, no rotation. <em>Bodyweight.</em></span></div>
         </div>
       </details>
 
       <details>
         <summary>Block 2+ · Ankle Drill · Cooldown</summary>
         <div class="detail-body">
-          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: Glute Bridge 3×10–12 + Dead Bug 3×8/side.</span></div>
+          <div class="spec"><span class="k">Block 2+</span><span class="v">Add Superset C: <a href="#ex-glute-bridge">Glute Bridge</a> 3×10–12 + <a href="#ex-dead-bug">Dead Bug</a> 3×8/side.</span></div>
           <div class="spec"><span class="k">Ankle</span><span class="v">Your current <a href="#ankle">Ankle Ladder</a> stage (3 min).</span></div>
-          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor · supine hamstring · chest-opening bench stretch. 20–30s each.</span></div>
+          <div class="spec"><span class="k">Cooldown</span><span class="v">Half-kneeling hip flexor<a class="mini-demo" href="https://www.youtube.com/results?search_query=half+kneeling+hip+flexor+stretch" target="_blank" rel="noopener">▶ demo</a> · supine hamstring<a class="mini-demo" href="https://www.youtube.com/results?search_query=supine+hamstring+stretch" target="_blank" rel="noopener">▶ demo</a> · chest-opening bench stretch<a class="mini-demo" href="https://www.youtube.com/results?search_query=chest+opening+stretch+on+bench" target="_blank" rel="noopener">▶ demo</a>. 20–30s each.</span></div>
         </div>
       </details>
     </div>
@@ -558,7 +583,7 @@
   <!-- 10 MINUTE -->
   <div id="min" class="callout">
     <div class="lbl">The 10-Minute Session — a real session, not a consolation prize</div>
-    <p>For rough days, flare days, and days when something is better than nothing. <strong>5 min</strong> abbreviated warm-up (marching + arm circles, then seated ankle alphabet &amp; heel/toe raises — don't skip the ankle part) → <strong>pick 2 exercises from today's session, 1 set each</strong> at a 4–5/10 effort → done. On a Session A day: Goblet Squat 1×10–15 + Dead Bug 1×6–8/side. On a Session B day: RDL 1×10–15 + Bird-Dog 1×6–8/side. Mark "Min dose" on your tracker. <strong>You showed up. You have not broken anything.</strong></p>
+    <p>For rough days, flare days, and days when something is better than nothing. <strong>5 min</strong> abbreviated warm-up (marching + arm circles, then seated ankle alphabet &amp; heel/toe raises — don't skip the ankle part) → <strong>pick 2 exercises from today's session, 1 set each</strong> at a 4–5/10 effort → done. On a Session A day: <a href="#ex-heel-elevated-goblet-squat">Goblet Squat</a> 1×10–15 + <a href="#ex-dead-bug">Dead Bug</a> 1×6–8/side. On a Session B day: <a href="#ex-dumbbell-romanian-deadlift-rdl">RDL</a> 1×10–15 + <a href="#ex-bird-dog">Bird-Dog</a> 1×6–8/side. Mark "Min dose" on your tracker. <strong>You showed up. You have not broken anything.</strong></p>
   </div>
 </section>
 
@@ -566,7 +591,7 @@
 <section id="exercises">
   <span class="section-tag">// Exercise Library</span>
   <h2>The <span class="em">movements</span></h2>
-  <p class="lead">Each card tells you how to do it, how to breathe, what it asks of your ankle, and how to make it easier or harder. The colored dot shows ankle (dorsiflexion) demand: <span style="color:var(--green)">●</span> low &nbsp; <span style="color:var(--yellow)">●</span> moderate &nbsp; <span style="color:var(--red)">●</span> high. Seated and floor exercises carry no ankle load.</p>
+  <p class="lead">Each card tells you how to do it, how to breathe, what it asks of your ankle, and how to make it easier or harder — and every card has a <strong style="color:var(--warm)">▶ video demo</strong> link so you can watch the movement before you try it. The colored dot shows ankle (dorsiflexion) demand: <span style="color:var(--green)">●</span> low &nbsp; <span style="color:var(--yellow)">●</span> moderate &nbsp; <span style="color:var(--red)">●</span> high. Seated and floor exercises carry no ankle load.</p>
 
   <div class="grid two" id="ex-grid"><!-- exercise cards injected by JS --></div>
 
@@ -598,24 +623,24 @@
     </div>
     <div class="card"><h4>Hips &amp; low back · 2 min</h4>
       <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
-        <li style="padding:5px 0">Single knee-to-chest — 5s hold, 3× each side</li>
-        <li style="padding:5px 0">Double knee-to-chest — gentle rock side to side</li>
-        <li style="padding:5px 0">Cat-cow — 8 slow reps with your breath</li>
-        <li style="padding:5px 0">Half-kneeling hip flexor stretch — 10–15s each side</li>
+        <li style="padding:5px 0">Single knee-to-chest — 5s hold, 3× each side<a class="mini-demo" href="https://www.youtube.com/results?search_query=single+knee+to+chest+stretch" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Double knee-to-chest — gentle rock side to side<a class="mini-demo" href="https://www.youtube.com/results?search_query=double+knee+to+chest+stretch" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Cat-cow — 8 slow reps with your breath<a class="mini-demo" href="https://www.youtube.com/results?search_query=cat+cow+stretch+beginner" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Half-kneeling hip flexor stretch — 10–15s each side<a class="mini-demo" href="https://www.youtube.com/results?search_query=half+kneeling+hip+flexor+stretch" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
     </div>
     <div class="card"><h4>Shoulders · 1 min</h4>
       <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
         <li style="padding:5px 0">Arm circles — 10 small + 10 large, each way</li>
-        <li style="padding:5px 0">Wall slides — 8–10 slow reps (also your overhead-press readiness check)</li>
-        <li style="padding:5px 0">Towel / band pull-aparts — 10 reps</li>
+        <li style="padding:5px 0">Wall slides — 8–10 slow reps (also your overhead-press readiness check)<a class="mini-demo" href="https://www.youtube.com/results?search_query=wall+slides+shoulder+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Towel / band pull-aparts — 10 reps<a class="mini-demo" href="https://www.youtube.com/results?search_query=band+pull+apart+exercise" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
     </div>
     <div class="card"><h4>Ankle prep · 2 min</h4>
       <ul style="list-style:none;color:var(--ink-dim);font-size:14.5px">
-        <li style="padding:5px 0">Seated ankle alphabet — trace A–Z, both feet</li>
-        <li style="padding:5px 0">Seated heel/toe raises — 2 × 10 each</li>
-        <li style="padding:5px 0">Gentle calf stretch — 15s each side, slight bend in back knee</li>
+        <li style="padding:5px 0">Seated ankle alphabet — trace A–Z, both feet<a class="mini-demo" href="https://www.youtube.com/results?search_query=seated+ankle+alphabet+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Seated heel/toe raises — 2 × 10 each<a class="mini-demo" href="https://www.youtube.com/results?search_query=seated+heel+raise+toe+raise+ankle+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li style="padding:5px 0">Gentle calf stretch — 15s each side, slight bend in back knee<a class="mini-demo" href="https://www.youtube.com/results?search_query=standing+calf+stretch+wall" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
     </div>
   </div>
@@ -636,9 +661,9 @@
     <div class="stage">
       <div class="head"><span class="n">1</span><span class="nm">Seated</span><span class="wk">Start here · every week</span></div>
       <ul>
-        <li>Ankle alphabet — trace A–Z, both feet, both directions</li>
-        <li>Seated heel/toe raises — 2 × 10 each direction</li>
-        <li>Ankle circles — 10 slow each direction, each foot</li>
+        <li>Ankle alphabet — trace A–Z, both feet, both directions<a class="mini-demo" href="https://www.youtube.com/results?search_query=seated+ankle+alphabet+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Seated heel/toe raises — 2 × 10 each direction<a class="mini-demo" href="https://www.youtube.com/results?search_query=seated+heel+raise+toe+raise+ankle+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Ankle circles — 10 slow each direction, each foot<a class="mini-demo" href="https://www.youtube.com/results?search_query=ankle+circles+exercise" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
       <div class="gate"><div class="gt">Advance to Stage 2 when all three are true</div>
         <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
@@ -650,9 +675,9 @@
     <div class="stage">
       <div class="head"><span class="n">2</span><span class="nm">Supported Standing</span><span class="wk">Indicative weeks 3–6</span></div>
       <ul>
-        <li>Supported single-leg balance — 10–20s, 3 holds each foot (fingertips on wall/counter)</li>
-        <li>Supported calf raises (bilateral) — 2 × 10, slow lower, brief pause at top</li>
-        <li>Heel walks + toe walks — short 4–5 step strips each way</li>
+        <li>Supported single-leg balance — 10–20s, 3 holds each foot (fingertips on wall/counter)<a class="mini-demo" href="https://www.youtube.com/results?search_query=supported+single+leg+balance+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Supported calf raises (bilateral) — 2 × 10, slow lower, brief pause at top<a class="mini-demo" href="https://www.youtube.com/results?search_query=supported+calf+raises+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Heel walks + toe walks — short 4–5 step strips each way<a class="mini-demo" href="https://www.youtube.com/results?search_query=heel+walks+toe+walks+exercise" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
       <div class="gate"><div class="gt">Advance to Stage 3 when all three are true</div>
         <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
@@ -664,9 +689,9 @@
     <div class="stage">
       <div class="head"><span class="n">3</span><span class="nm">Unassisted Single-Leg</span><span class="wk">Indicative weeks 7–12</span></div>
       <ul>
-        <li>Single-leg balance, eyes open — 20–30s, 3 holds each foot, no wall contact</li>
+        <li>Single-leg balance, eyes open — 20–30s, 3 holds each foot, no wall contact<a class="mini-demo" href="https://www.youtube.com/results?search_query=single+leg+balance+exercise" target="_blank" rel="noopener">▶ demo</a></li>
         <li>Single-leg balance, eyes closed (optional) — 10–15s once eyes-open is steady</li>
-        <li>Single-leg calf raises — start 5/side, build toward 10, hand hovering near wall</li>
+        <li>Single-leg calf raises — start 5/side, build toward 10, hand hovering near wall<a class="mini-demo" href="https://www.youtube.com/results?search_query=single+leg+calf+raise+exercise" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
       <div class="gate"><div class="gt">Advance to Stage 4 when all three are true</div>
         <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
@@ -678,9 +703,9 @@
     <div class="stage">
       <div class="head"><span class="n">4</span><span class="nm">Dynamic</span><span class="wk">Indicative week 12+ · still low-impact</span></div>
       <ul>
-        <li>Weight shifts + slow lateral steps — 4–6 steps each way</li>
-        <li>Slow stair balance work (if available) — controlled descent, use the railing</li>
-        <li>Balance disc / folded-mat standing (optional) — 20–30s per foot</li>
+        <li>Weight shifts + slow lateral steps — 4–6 steps each way<a class="mini-demo" href="https://www.youtube.com/results?search_query=weight+shift+lateral+step+balance+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Slow stair balance work (if available) — controlled descent, use the railing<a class="mini-demo" href="https://www.youtube.com/results?search_query=controlled+step+down+exercise" target="_blank" rel="noopener">▶ demo</a></li>
+        <li>Balance disc / folded-mat standing (optional) — 20–30s per foot<a class="mini-demo" href="https://www.youtube.com/results?search_query=balance+pad+standing+exercise" target="_blank" rel="noopener">▶ demo</a></li>
       </ul>
       <div class="gate"><div class="gt">Keep going — this is maintenance now</div>
         <label><input type="checkbox"> All drills feel easy and completely pain-free</label>
@@ -948,56 +973,68 @@
 
 <script>
 /* ============== EXERCISE LIBRARY DATA ============== */
+const YT = q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+const exSlug = s => 'ex-' + s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+
 const EXERCISES = [
   { pattern:'Squat Pattern', name:'Heel-Elevated Goblet Squat', demand:'low',
+    video:'heel elevated goblet squat form',
     how:'Heels on a low plate or folded mat (1–2"), one dumbbell at your chest. Sit down between your knees, heels down, then stand — driving through your whole foot.',
     breathe:'Exhale as you stand up. Never hold.',
     ankle:'Stop if you feel pinching at the front of the ankle. If your heels want to rise, the platform is too low or the weight too heavy for today.',
     easier:'Box squat — sit to a higher bench, pause, stand back up.',
     harder:'Add a second dumbbell, or lower the box to increase depth.' },
   { pattern:'Hip Hinge', name:'Dumbbell Romanian Deadlift (RDL)', demand:'low',
+    video:'dumbbell romanian deadlift form beginner',
     how:'Dumbbells in front of your thighs, soft knees. Push your hips back (not down) to mid-shin depth, feeling your hamstrings. Drive hips forward to stand, chest proud.',
     breathe:'Exhale as you stand up. Inhale as you lower.',
     ankle:'No deep ankle flex needed. Stop if you feel any ache during the standing phase.',
     easier:'Wall hip hinge — stand 12" from a wall, push hips back to touch it, no weight.',
     harder:'More weight, or a slower lowering phase (Block 2+, not Week 1).' },
   { pattern:'Push', name:'Incline Dumbbell Press (30–45°)', demand:null,
+    video:'incline dumbbell press form beginner',
     how:'Bench at 30–45°. Dumbbells at chest level, elbows 45–60° from your sides (not flared). Press up and slightly together, lower with control.',
     breathe:'Exhale as you press up. Never hold.',
     ankle:'Seated/reclined — no ankle demand.',
     easier:'Floor press — lie flat, range naturally limited to a safe arc.',
     harder:'Move toward flat bench as shoulder mobility improves, or add weight.' },
   { pattern:'Push', name:'Seated Dumbbell Press (neutral grip)', demand:null,
+    video:'seated dumbbell shoulder press neutral grip',
     how:'Sit upright or slightly reclined, neutral/hammer grip (palms facing). Press to eye level or slightly above — not locked out overhead. Lower to shoulder height.',
     breathe:'Exhale as you press up. Never hold.',
     ankle:'Seated — no ankle demand.',
     easier:'Seated front raise — raise dumbbells from thigh to shoulder height, no pressing.',
     harder:'Add weight, or lower the bench angle slightly toward incline.' },
   { pattern:'Pull', name:'Seated Single-Arm Dumbbell Row', demand:null,
+    video:'seated one arm dumbbell row form',
     how:'Sit on the bench edge, one hand bracing on your thigh. Other arm hangs straight with a dumbbell. Pull to your hip, elbow close. Lower with control.',
     breathe:'Exhale as you pull. Inhale as you lower.',
     ankle:'Seated/supported — no ankle demand.',
     easier:'Resistance-band seated row — anchor a band low, row both arms.',
     harder:'Add weight, or progress to the supported bent-over row.' },
   { pattern:'Pull', name:'Bent-Over Dumbbell Row', demand:null,
+    video:'bent over dumbbell row form beginner',
     how:'Dumbbell in each hand, hinge forward toward parallel — flat back, chest on an inclined bench if your low back fatigues. Pull both dumbbells to your hips, elbows close.',
     breathe:'Exhale as you pull. Inhale as you lower.',
     ankle:'Supported hinge — no ankle demand.',
     easier:'Seated single-arm row (the Session A pull).',
     harder:'Add weight, or a brief pause at the top of each rep.' },
   { pattern:'Core (Anti-Extension)', name:'Dead Bug', demand:null,
+    video:'dead bug exercise proper form',
     how:'On your back, arms toward the ceiling, knees bent 90° in tabletop. Lower one arm overhead while straightening the opposite leg. Return, switch. Keep your low back pressed flat — that contact is the exercise.',
     breathe:'Exhale as you extend arm and leg. Inhale to return.',
     ankle:'Fully unloaded. If your low back lifts, shorten how far you lower the leg.',
     easier:'Legs only — both arms up, lower one leg at a time.',
     harder:'Hold a light dumbbell in each hand while you extend.' },
   { pattern:'Core (Anti-Extension)', name:'Bird-Dog', demand:null,
+    video:'bird dog exercise proper form',
     how:'Hands under shoulders, knees under hips. Extend one arm forward and the opposite leg back together, spine neutral, hips level (no rotation). Hold briefly, return, switch.',
     breathe:'Exhale as you extend. Inhale to return.',
     ankle:'Fully unloaded. Focus on keeping hips square to the floor.',
     easier:'Arm only or leg only until the full pattern feels comfortable.',
     harder:'Pause at full extension for 3 seconds before returning.' },
   { pattern:'Activation', name:'Glute Bridge', demand:null,
+    video:'glute bridge proper form beginner',
     how:'On your back, knees bent, feet flat ~hip-width. Drive hips up to a straight knee-to-shoulder line, then lower with control.',
     breathe:'Exhale as you press up.',
     ankle:'No ankle demand.',
@@ -1025,10 +1062,12 @@ const START = {
   g.innerHTML = EXERCISES.map(e => {
     const dot = e.demand ? `<span class="dot-tag"><span class="demand-dot ${DEMAND[e.demand][0]}"></span>${DEMAND[e.demand][1]}</span>` : '';
     const start = START[e.name] ? `<div class="start-here"><span class="sh-k">Start with</span>${START[e.name]}</div>` : '';
-    return `<div class="card">
+    const demo = e.video ? `<a class="demo-link" href="${YT(e.video)}" target="_blank" rel="noopener">▶ Watch a video demo</a>` : '';
+    return `<div class="card" id="${exSlug(e.name)}">
       <div class="pattern-label">${e.pattern}</div>
       <div class="head-row"><h4 style="margin-bottom:0">${e.name}</h4>${dot}</div>
       ${start}
+      ${demo}
       <details>
         <summary>How to do it</summary>
         <div class="detail-body">
@@ -1234,12 +1273,41 @@ document.getElementById('tk-file').onchange = (ev) => {
   r.readAsText(f);
 };
 
+/* ---- open an exercise card's instructions when linked to ---- */
+function openExercise(){
+  if (!location.hash) return;
+  const el = document.getElementById(location.hash.slice(1));
+  if (el && el.id.indexOf('ex-') === 0){
+    const det = el.querySelector('details');
+    if (det) det.open = true;
+  }
+}
+window.addEventListener('hashchange', openExercise);
+
 /* ---- init ---- */
 (function init(){
   const d = new Date();
   const iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   document.getElementById('tk-date').value = iso;
-  rowsFor('A'); renderHistory();
+
+  /* Suggest today's session: alternate from the most recent logged session. */
+  const all = load().slice().sort((a,b)=> (a.date < b.date ? 1 : -1));
+  const last = all[0] || null;
+  const suggested = last ? (last.session === 'A' ? 'B' : 'A') : 'A';
+  state.session = suggested;
+  setSeg('seg-session', suggested, 's');
+  rowsFor(suggested);
+  const tMain = document.querySelector('#today-btn .t-main');
+  const tSub = document.querySelector('#today-btn .t-sub');
+  if (tMain){
+    tMain.textContent = `Today's workout · Session ${suggested}`;
+    tSub.textContent = last ? `Last time: Session ${last.session} on ${last.date}` : 'First session? Start with Session A';
+  }
+  const badge = document.getElementById('badge-' + suggested);
+  if (badge) badge.hidden = false;
+
+  renderHistory();
+  openExercise();
 })();
 
 /* ---- self-screen ---- */
